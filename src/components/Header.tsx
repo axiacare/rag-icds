@@ -1,7 +1,7 @@
 import { FileText, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import icdsLogo from "@/assets/icds-logo.png";
+import icdsMainLogo from "@/assets/icds-main-logo.png";
 import axiacareLogo from "@/assets/axiacare-logo.png";
 
 const Header = () => {
@@ -9,44 +9,43 @@ const Header = () => {
     <header className="bg-gradient-medical shadow-medical sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center space-x-4 hover:opacity-90 transition-opacity">
-            <img 
-              src={icdsLogo} 
-              alt="ICDS - Gestão em Saúde" 
-              className="h-14 md:h-20 object-contain"
-            />
-            <div className="hidden sm:block">
-              <h1 className="text-xl md:text-2xl font-bold text-white leading-tight">
-                RAG
-              </h1>
-              <p className="text-white/90 text-xs md:text-sm leading-tight">
+          <Link to="/" className="flex items-center space-x-3 sm:space-x-4 hover:opacity-90 transition-opacity">
+            <div className="bg-white rounded-lg p-2 sm:p-3 shadow-lg">
+              <img 
+                src={icdsMainLogo} 
+                alt="ICDS Logo" 
+                className="h-6 sm:h-8 md:h-10 w-auto"
+              />
+            </div>
+            <div className="text-white">
+              <h1 className="text-lg sm:text-xl md:text-2xl font-bold">RAG</h1>
+              <p className="text-xs sm:text-sm opacity-90 hidden sm:block">
                 Requisitos de Apoio a Gestão
               </p>
             </div>
-            <div className="sm:hidden">
-              <h1 className="text-lg font-bold text-white">RAG</h1>
-            </div>
           </Link>
           
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             {/* Powered by AxiaCare */}
-            <div className="flex items-center space-x-2 bg-white/80 px-3 py-1 rounded-full backdrop-blur-sm hover:bg-white/90 transition-all">
-              <span className="text-gray-800 text-sm font-medium">Powered by</span>
+            <div className="flex items-center space-x-2 bg-white/90 px-2 sm:px-3 py-1 rounded-full backdrop-blur-sm hover:bg-white/95 transition-all shadow-sm">
+              <span className="text-gray-800 text-xs sm:text-sm font-medium">Powered by</span>
               <img 
                 src={axiacareLogo} 
                 alt="AxiaCare" 
-                className="h-6 object-contain"
+                className="h-4 sm:h-6 object-contain"
               />
             </div>
             
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="bg-white/10 text-white border-white/30 hover:bg-white/20 backdrop-blur-sm hidden sm:flex"
-            >
-              <FileText className="w-4 h-4 mr-2" />
-              <span className="hidden md:inline">Relatórios</span>
-            </Button>
+            <Link to="/reports">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="bg-white/10 text-white border-white/30 hover:bg-white/20 backdrop-blur-sm hidden sm:flex"
+              >
+                <FileText className="w-4 h-4 mr-2" />
+                <span className="hidden md:inline">Relatórios</span>
+              </Button>
+            </Link>
             <Link to="/admin">
               <Button 
                 variant="outline" 

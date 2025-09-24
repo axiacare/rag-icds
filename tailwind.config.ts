@@ -73,6 +73,8 @@ export default {
       boxShadow: {
         "medical": "var(--shadow-medical)",
         "card": "var(--shadow-card)",
+        "elegant": "var(--shadow-elegant)",
+        "glow": "var(--shadow-glow)",
       },
       borderRadius: {
         lg: "var(--radius)",

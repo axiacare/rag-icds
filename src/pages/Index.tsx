@@ -6,17 +6,17 @@ import AuditForm from "@/components/AuditForm";
 import AuditReport from "@/components/AuditReport";
 import RecentAudits from "@/components/RecentAudits";
 import InstitutionForm from "@/components/InstitutionForm";
-import { hospitalSectors } from "@/data/sectors";
+import { hospitalSectors } from "@/data/realistic-sectors";
 import { AuditResult } from "@/types/audit";
 import { 
-  Heart, 
-  Scissors, 
-  Truck, 
-  Bed, 
-  Pill, 
+  Shield, 
   Microscope, 
-  Zap, 
-  Users,
+  Pill, 
+  Truck, 
+  Scissors, 
+  Heart, 
+  Trash2, 
+  Award,
   FileText 
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -52,14 +52,14 @@ const Index = () => {
   const [showInstitutionForm, setShowInstitutionForm] = useState(false);
 
   const sectorIcons = [
-    <Heart className="w-6 h-6" />,
-    <Scissors className="w-6 h-6" />,
-    <Truck className="w-6 h-6" />,
-    <Bed className="w-6 h-6" />,
-    <Pill className="w-6 h-6" />,
-    <Microscope className="w-6 h-6" />,
-    <Zap className="w-6 h-6" />,
-    <Users className="w-6 h-6" />
+    <Shield className="w-6 h-6" />,      // Segurança do Paciente
+    <Microscope className="w-6 h-6" />,  // Controle de Infecção
+    <Pill className="w-6 h-6" />,        // Gestão de Medicamentos  
+    <Truck className="w-6 h-6" />,       // Emergência
+    <Scissors className="w-6 h-6" />,    // Centro Cirúrgico
+    <Heart className="w-6 h-6" />,       // UTI
+    <Trash2 className="w-6 h-6" />,      // Gestão de Resíduos
+    <Award className="w-6 h-6" />        // Gestão da Qualidade
   ];
 
   const handleSectorToggle = (sectorId: number) => {
@@ -182,30 +182,38 @@ const Index = () => {
       
       {/* Hero Section */}
       <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
-        {/* Modern gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-medical-primary via-medical-secondary to-medical-accent"></div>
-        <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 via-transparent to-accent/20"></div>
+        {/* Clean medical gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-medical-primary to-medical-secondary"></div>
+        
+        {/* Subtle overlay for text readability */}
+        <div className="absolute inset-0 bg-black/10"></div>
         
         {/* Decorative elements */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+          <div className="absolute top-20 right-10 w-32 h-32 bg-white/5 rounded-full blur-xl"></div>
+          <div className="absolute bottom-20 left-10 w-40 h-40 bg-white/5 rounded-full blur-xl"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/3 rounded-full blur-3xl"></div>
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center space-y-6 sm:space-y-8 max-w-5xl mx-auto">
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white leading-tight animate-fade-in">
-              Sistema RAG
-              <span className="block text-xl sm:text-3xl md:text-4xl lg:text-6xl bg-gradient-to-r from-white to-medical-light bg-clip-text text-transparent font-semibold mt-2">
-                Requisitos de Apoio a Gestão
-              </span>
-            </h1>
-            <p className="text-sm sm:text-lg md:text-xl lg:text-2xl text-white/90 leading-relaxed px-2 sm:px-4 animate-fade-in">
-              Metodologia de auditoria interna do <strong className="text-white">Instituto de Cooperação para o Desenvolvimento da Saúde (ICDS)</strong>
-            </p>
-            <p className="text-xs sm:text-base md:text-lg text-white/80 leading-relaxed px-2 sm:px-4 max-w-3xl mx-auto animate-fade-in">
-              Realize auditorias estruturadas e gere relatórios profissionais para garantir a qualidade e conformidade das unidades hospitalares
-            </p>
+          <div className="text-center space-y-6 sm:space-y-8 max-w-4xl mx-auto">
+            <div className="space-y-4">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
+                Sistema RAG
+              </h1>
+              <p className="text-lg sm:text-2xl md:text-3xl lg:text-4xl text-white/95 font-medium leading-tight">
+                Requisitos de Apoio à Gestão
+              </p>
+            </div>
+            
+            <div className="space-y-4 max-w-3xl mx-auto">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 leading-relaxed">
+                Metodologia de auditoria interna do <strong className="text-white font-semibold">Instituto de Cooperação para o Desenvolvimento da Saúde (ICDS)</strong>
+              </p>
+              <p className="text-sm sm:text-base md:text-lg text-white/80 leading-relaxed">
+                Realize auditorias estruturadas e gere relatórios profissionais para garantir a qualidade e conformidade das unidades hospitalares
+              </p>
+            </div>
           </div>
         </div>
       </section>

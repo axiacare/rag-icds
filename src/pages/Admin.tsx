@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Edit2, Trash2, Save, ArrowLeft, Settings } from "lucide-react";
-import { hospitalSectors } from "@/data/sectors";
+import { hospitalSectors } from "@/data/realistic-sectors";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 

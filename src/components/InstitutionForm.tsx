@@ -15,7 +15,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { hospitalSectors } from '@/data/sectors';
+import { hospitalSectors } from '@/data/realistic-sectors';
 
 interface InstitutionData {
   name: string;
@@ -32,12 +32,10 @@ interface InstitutionFormProps {
 }
 
 const auditorOptions: Option[] = [
-  { label: "Dr. Ana Silva", value: "ana-silva" },
-  { label: "Dr. Carlos Santos", value: "carlos-santos" },
-  { label: "Dra. Maria Oliveira", value: "maria-oliveira" },
-  { label: "Dr. João Pereira", value: "joao-pereira" },
-  { label: "Dra. Paula Costa", value: "paula-costa" },
-  { label: "Dr. Ricardo Lima", value: "ricardo-lima" },
+  { label: "Fernando Paragó", value: "fernando-parago" },
+  { label: "Sandra Miziara", value: "sandra-miziara" },
+  { label: "Letícia Teles", value: "leticia-teles" },
+  { label: "Guilherme Thomé", value: "guilherme-thome" },
 ];
 
 export default function InstitutionForm({ onDataChange, selectedSectors, onSectorToggle }: InstitutionFormProps) {
@@ -67,7 +65,7 @@ export default function InstitutionForm({ onDataChange, selectedSectors, onSecto
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Institution Identification */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <div className="space-y-2">
             <Label htmlFor="institution-name" className="text-sm font-medium">
               Nome da Instituição <span className="text-destructive">*</span>
@@ -77,7 +75,7 @@ export default function InstitutionForm({ onDataChange, selectedSectors, onSecto
               placeholder="Digite o nome da instituição..."
               value={institutionData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
-              className="w-full"
+              className="w-full h-11"
             />
           </div>
           <div className="space-y-2">
@@ -89,75 +87,82 @@ export default function InstitutionForm({ onDataChange, selectedSectors, onSecto
               placeholder="Digite o número de cadastro..."
               value={institutionData.registrationNumber}
               onChange={(e) => handleInputChange('registrationNumber', e.target.value)}
-              className="w-full"
+              className="w-full h-11"
             />
           </div>
         </div>
 
-        {/* Audit Date */}
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">
-            Data da Auditoria <span className="text-destructive">*</span>
-          </Label>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className={cn(
-                  "w-full justify-start text-left font-normal h-10",
-                  !institutionData.auditDate && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {institutionData.auditDate ? (
-                  format(institutionData.auditDate, "PPP", { locale: ptBR })
-                ) : (
-                  <span>Selecione a data da auditoria</span>
-                )}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 z-50" align="start">
-              <Calendar
-                mode="single"
-                selected={institutionData.auditDate}
-                onSelect={(date) => handleInputChange('auditDate', date)}
-                initialFocus
-                className="p-3 pointer-events-auto"
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
-
-        {/* Auditors */}
-        <div className="space-y-3">
-          <Label className="text-sm font-medium">
-            Auditores <span className="text-destructive">*</span>
-          </Label>
-          <MultiSelect
-            options={auditorOptions}
-            selected={institutionData.auditors}
-            onChange={(auditors) => handleInputChange('auditors', auditors)}
-            placeholder="Selecione os auditores..."
-          />
+        {/* Audit Date and Auditors */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Data da Auditoria <span className="text-destructive">*</span>
+            </Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-full justify-start text-left font-normal h-11",
+                    !institutionData.auditDate && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {institutionData.auditDate ? (
+                    format(institutionData.auditDate, "PPP", { locale: ptBR })
+                  ) : (
+                    <span>Selecione a data da auditoria</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0 z-50" align="start">
+                <Calendar
+                  mode="single"
+                  selected={institutionData.auditDate}
+                  onSelect={(date) => handleInputChange('auditDate', date)}
+                  initialFocus
+                  className="p-3 pointer-events-auto"
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+          
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">
+              Auditores <span className="text-destructive">*</span>
+            </Label>
+            <MultiSelect
+              options={auditorOptions}
+              selected={institutionData.auditors}
+              onChange={(auditors) => handleInputChange('auditors', auditors)}
+              placeholder="Selecione os auditores..."
+            />
+          </div>
         </div>
 
         {/* Sector Selection */}
-        <div className="space-y-3">
+        <div className="space-y-4">
           <Label className="text-sm font-medium">Áreas desta Auditoria</Label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {hospitalSectors.map((sector) => (
-              <div key={sector.id} className="flex items-center space-x-2">
+              <div key={sector.id} className="flex items-start space-x-3 p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors">
                 <Checkbox
                   id={`sector-${sector.id}`}
                   checked={selectedSectors.includes(sector.id)}
                   onCheckedChange={() => onSectorToggle(sector.id)}
+                  className="mt-0.5"
                 />
-                <Label 
-                  htmlFor={`sector-${sector.id}`} 
-                  className="text-sm cursor-pointer leading-tight flex-1"
-                >
-                  {sector.name}
-                </Label>
+                <div className="flex-1 min-w-0">
+                  <Label 
+                    htmlFor={`sector-${sector.id}`} 
+                    className="text-sm font-medium cursor-pointer leading-tight block mb-1"
+                  >
+                    {sector.name}
+                  </Label>
+                  <p className="text-xs text-muted-foreground leading-tight">
+                    {sector.description}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
