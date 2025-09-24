@@ -63,6 +63,7 @@ export default {
           success: "hsl(var(--medical-success))",
           warning: "hsl(var(--medical-warning))",
           danger: "hsl(var(--medical-danger))",
+          accent: "hsl(var(--medical-secondary))",
         },
       },
       backgroundImage: {

@@ -192,13 +192,16 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-medical opacity-5"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center space-y-6 max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-6xl font-bold text-foreground leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
               Sistema RAG
-              <span className="block text-4xl md:text-5xl bg-gradient-medical bg-clip-text text-transparent font-semibold">
-                Auditoria Hospitalar
+              <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl bg-gradient-medical bg-clip-text text-transparent font-semibold">
+                Requisitos de Apoio a Gestão
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground leading-relaxed px-4">
+              Metodologia de auditoria interna do <strong>Instituto de Cooperação para o Desenvolvimento da Saúde (ICDS)</strong>
+            </p>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground/80 leading-relaxed px-4">
               Realize auditorias estruturadas e gere relatórios profissionais para garantir a qualidade e conformidade das unidades hospitalares
             </p>
           </div>
@@ -216,10 +219,10 @@ const Index = () => {
                     <FileText className="w-10 h-10 text-white" />
                   </div>
                   <div className="space-y-4">
-                    <h2 className="text-3xl font-bold text-foreground">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
                       Pronto para começar?
                     </h2>
-                    <p className="text-lg text-muted-foreground">
+                    <p className="text-base sm:text-lg text-muted-foreground px-4 sm:px-0">
                       Configure os dados da instituição e inicie uma nova auditoria hospitalar completa
                     </p>
                   </div>
@@ -261,8 +264,10 @@ const Index = () => {
         {/* Sectors Grid */}
         {showInstitutionForm && selectedSectors.length > 0 && (
           <section>
-            <h2 className="text-2xl font-bold mb-6 text-foreground">Setores Hospitalares</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-foreground px-4 sm:px-0">
+              Setores Hospitalares
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
               {sectorsWithStatus.map((sector) => (
                 <SectorCard
                   key={sector.id}
@@ -282,7 +287,9 @@ const Index = () => {
         {/* Recent Audits */}
         {showInstitutionForm && auditResults.length > 0 && (
           <section>
-            <h2 className="text-2xl font-bold mb-6 text-foreground">Histórico de Auditorias</h2>
+            <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-foreground px-4 sm:px-0">
+              Histórico de Auditorias
+            </h2>
             <RecentAudits 
               auditResults={auditResults} 
               onViewReport={(result) => {setCurrentAuditResult(result); setAppState('report');}} 
