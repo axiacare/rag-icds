@@ -64,8 +64,12 @@ const Index = () => {
   });
 
   const handleStartAudit = (sectorId: number) => {
+    console.log('Iniciando auditoria para setor:', sectorId);
+    console.log('Estado atual:', appState);
     setCurrentSector(sectorId);
     setAppState('audit');
+    console.log('Novo estado definido para: audit');
+    console.log('Setor atual definido para:', sectorId);
   };
 
   const handleAuditComplete = (result: any) => {
