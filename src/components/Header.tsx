@@ -13,7 +13,7 @@ const Header = () => {
             <img 
               src={icdsLogo} 
               alt="ICDS - Gestão em Saúde" 
-              className="h-12 md:h-16 object-contain"
+              className="h-14 md:h-20 object-contain"
             />
             <div className="hidden sm:block">
               <h1 className="text-xl md:text-2xl font-bold text-white leading-tight">
@@ -28,7 +28,17 @@ const Header = () => {
             </div>
           </Link>
           
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-4">
+            {/* Powered by AxiaCare */}
+            <div className="flex items-center space-x-2 bg-white/80 px-3 py-1 rounded-full backdrop-blur-sm hover:bg-white/90 transition-all">
+              <span className="text-gray-800 text-sm font-medium">Powered by</span>
+              <img 
+                src={axiacareLogo} 
+                alt="AxiaCare" 
+                className="h-6 object-contain"
+              />
+            </div>
+            
             <Button 
               variant="outline" 
               size="sm" 
@@ -47,18 +57,6 @@ const Header = () => {
                 <span className="hidden sm:inline">Admin</span>
               </Button>
             </Link>
-          </div>
-        </div>
-        
-        {/* Powered by AxiaCare */}
-        <div className="flex justify-end mt-2">
-          <div className="flex items-center space-x-2 bg-white/80 px-3 py-1 rounded-full backdrop-blur-sm hover:bg-white/90 transition-all">
-            <span className="text-gray-800 text-sm font-medium">Powered by</span>
-            <img 
-              src={axiacareLogo} 
-              alt="AxiaCare" 
-              className="h-6 object-contain"
-            />
           </div>
         </div>
       </div>
