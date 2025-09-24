@@ -29,7 +29,7 @@ Pontuação: ${auditResult.score}
 RESPOSTAS POR CATEGORIA:
 ${sector?.questions.map(q => `
 ${q.category} - ${q.indicator}
-Pergunta: ${q.text}
+Requisito: ${q.text}
 Resposta: ${auditResult.answers[q.id] || 'Não respondido'}
 Observações: ${auditResult.observations[q.id] || 'Nenhuma'}
 `).join('\n')}
@@ -106,7 +106,7 @@ RECOMENDAÇÕES:
                 <div className="text-3xl font-bold text-medical-warning mb-1">
                   {sector?.questions.length || 0}
                 </div>
-                <p className="text-sm text-muted-foreground">Questões Avaliadas</p>
+                <p className="text-sm text-muted-foreground">Requisitos Avaliados</p>
               </div>
             </div>
           </CardContent>
@@ -126,9 +126,8 @@ RECOMENDAÇÕES:
                       <div className="flex-1">
                         <h4 className="font-semibold text-base">{question.text}</h4>
                         <div className="flex space-x-2 mt-2">
-                          <Badge variant="outline">{question.category}</Badge>
-                          <Badge className="bg-medical-secondary text-white">
-                            {question.indicator}
+                          <Badge className="bg-primary text-primary-foreground">
+                            {question.category}
                           </Badge>
                         </div>
                       </div>

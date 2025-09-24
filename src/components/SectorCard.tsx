@@ -7,8 +7,8 @@ interface SectorCardProps {
   title: string;
   description: string;
   icon: React.ReactNode;
-  totalQuestions: number;
-  completedQuestions: number;
+  totalRequirements: number;
+  completedRequirements: number;
   status: "pending" | "in-progress" | "completed";
   onStartAudit: () => void;
 }
@@ -17,8 +17,8 @@ const SectorCard = ({
   title,
   description,
   icon,
-  totalQuestions,
-  completedQuestions,
+  totalRequirements,
+  completedRequirements,
   status,
   onStartAudit
 }: SectorCardProps) => {
@@ -48,7 +48,7 @@ const SectorCard = ({
     }
   };
 
-  const progress = (completedQuestions / totalQuestions) * 100;
+  const progress = (completedRequirements / totalRequirements) * 100;
 
   return (
     <Card className="shadow-card hover:shadow-medical transition-all duration-300 hover:scale-105 cursor-pointer group">
@@ -71,7 +71,7 @@ const SectorCard = ({
         <div className="space-y-3">
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Progresso</span>
-            <span className="font-medium">{completedQuestions}/{totalQuestions} questões</span>
+            <span className="font-medium">{completedRequirements}/{totalRequirements} requisitos</span>
           </div>
           
           <div className="w-full bg-muted rounded-full h-2">

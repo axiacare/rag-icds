@@ -88,8 +88,8 @@ const Index = () => {
       title: sector.name,
       description: sector.description,
       icon: sectorIcons[index] || <FileText className="w-6 h-6" />,
-      totalQuestions: sector.questions.length,
-      completedQuestions,
+      totalRequirements: sector.questions.length,
+      completedRequirements: completedQuestions,
       status
     };
   });
@@ -145,9 +145,9 @@ const Index = () => {
   const inProgressSectors = 0; // No in-progress status in current implementation
   const pendingSectors = sectorsWithStatus.filter(s => s.status === "pending").length;
   
-  const totalQuestions = sectorsWithStatus.reduce((acc, s) => acc + s.totalQuestions, 0);
-  const completedQuestions = sectorsWithStatus.reduce((acc, s) => acc + s.completedQuestions, 0);
-  const overallProgress = (completedQuestions / totalQuestions) * 100;
+  const totalRequirements = sectorsWithStatus.reduce((acc, s) => acc + s.totalRequirements, 0);
+  const completedRequirements = sectorsWithStatus.reduce((acc, s) => acc + s.completedRequirements, 0);
+  const overallProgress = (completedRequirements / totalRequirements) * 100;
 
   // Render based on app state
   if (appState === 'audit' && currentSector) {
@@ -227,8 +227,8 @@ const Index = () => {
                   title={sector.title}
                   description={sector.description}
                   icon={sector.icon}
-                  totalQuestions={sector.totalQuestions}
-                  completedQuestions={sector.completedQuestions}
+                  totalRequirements={sector.totalRequirements}
+                  completedRequirements={sector.completedRequirements}
                   status={sector.status}
                   onStartAudit={() => handleStartAudit(sector.id)}
                 />

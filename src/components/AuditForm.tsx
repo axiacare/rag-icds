@@ -50,10 +50,10 @@ const AuditForm = ({ sectorName, questions, onComplete, onBack }: AuditFormProps
   const canProceed = () => {
     if (currentQuestion.required) {
       if (currentQuestion.type === 'photo_evidence') {
-        // Para perguntas obrigatórias de evidência fotográfica, deve ter foto
+        // Para requisitos de evidência fotográfica, deve ter foto
         return photos[currentQuestion.id]?.length > 0;
       } else {
-        // Para outras perguntas obrigatórias, deve ter resposta
+        // Para outros requisitos, deve ter resposta
         return answers[currentQuestion.id] !== undefined;
       }
     }
@@ -144,7 +144,7 @@ const AuditForm = ({ sectorName, questions, onComplete, onBack }: AuditFormProps
           <div className="space-y-4">
             <div className="p-4 bg-medical-secondary/10 rounded-lg border-2 border-dashed border-medical-secondary">
               <p className="text-center text-medical-secondary font-medium mb-2">
-                📸 Esta pergunta requer evidência fotográfica obrigatória
+                📸 Este requisito requer evidência fotográfica
               </p>
               <p className="text-center text-sm text-muted-foreground">
                 Use a seção de evidências abaixo para anexar as fotos necessárias
@@ -177,7 +177,7 @@ const AuditForm = ({ sectorName, questions, onComplete, onBack }: AuditFormProps
               <div>
                 <h1 className="text-xl font-bold text-white">{sectorName}</h1>
                 <p className="text-white/80 text-sm">
-                  Pergunta {currentQuestionIndex + 1} de {questions.length}
+                  Requisito {currentQuestionIndex + 1} de {questions.length}
                 </p>
               </div>
             </div>
@@ -204,13 +204,9 @@ const AuditForm = ({ sectorName, questions, onComplete, onBack }: AuditFormProps
               <div className="space-y-2">
                 <CardTitle className="text-xl">{currentQuestion.text}</CardTitle>
                 <div className="flex space-x-2">
-                  <Badge variant="outline">{currentQuestion.category}</Badge>
-                  <Badge className="bg-medical-secondary text-white">
-                    {currentQuestion.indicator}
+                  <Badge className="bg-primary text-primary-foreground">
+                    {currentQuestion.category}
                   </Badge>
-                  {currentQuestion.required && (
-                    <Badge className="bg-medical-danger text-white">Obrigatório</Badge>
-                  )}
                   {currentQuestion.type === 'photo_evidence' && (
                     <Badge className="bg-medical-warning text-white">
                       <Camera className="w-3 h-3 mr-1" />
