@@ -82,10 +82,7 @@ const SectorCard = ({
           </div>
           
           <Button 
-            onClick={() => {
-              console.log('Botão clicado no setor:', title);
-              onStartAudit();
-            }}
+            onClick={onStartAudit}
             variant="medical"
             className="w-full group-hover:shadow-medical transition-all duration-300"
           >

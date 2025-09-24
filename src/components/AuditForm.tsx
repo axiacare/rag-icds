@@ -49,10 +49,13 @@ const AuditForm = ({ sectorName, questions, onComplete, onBack }: AuditFormProps
 
   const canProceed = () => {
     if (currentQuestion.required) {
-      const hasAnswer = answers[currentQuestion.id] !== undefined;
-      const hasPhotos = currentQuestion.type === 'photo_evidence' ? 
-        photos[currentQuestion.id]?.length > 0 : true;
-      return hasAnswer && hasPhotos;
+      if (currentQuestion.type === 'photo_evidence') {
+        // Para perguntas obrigatórias de evidência fotográfica, deve ter foto
+        return photos[currentQuestion.id]?.length > 0;
+      } else {
+        // Para outras perguntas obrigatórias, deve ter resposta
+        return answers[currentQuestion.id] !== undefined;
+      }
     }
     return true;
   };
@@ -139,25 +142,14 @@ const AuditForm = ({ sectorName, questions, onComplete, onBack }: AuditFormProps
       case 'photo_evidence':
         return (
           <div className="space-y-4">
-            <div className="flex items-center space-x-4">
-              <Input
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={(e) => handlePhotoUpload(currentQuestion.id, e.target.files)}
-                className="flex-1"
-              />
-              <Camera className="w-5 h-5 text-medical-primary" />
+            <div className="p-4 bg-medical-secondary/10 rounded-lg border-2 border-dashed border-medical-secondary">
+              <p className="text-center text-medical-secondary font-medium mb-2">
+                📸 Esta pergunta requer evidência fotográfica obrigatória
+              </p>
+              <p className="text-center text-sm text-muted-foreground">
+                Use a seção de evidências abaixo para anexar as fotos necessárias
+              </p>
             </div>
-            {photos[currentQuestion.id] && photos[currentQuestion.id].length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {photos[currentQuestion.id].map((file, index) => (
-                  <Badge key={index} className="bg-medical-success text-white">
-                    {file.name}
-                  </Badge>
-                ))}
-              </div>
-            )}
           </div>
         );
 
@@ -219,6 +211,12 @@ const AuditForm = ({ sectorName, questions, onComplete, onBack }: AuditFormProps
                   {currentQuestion.required && (
                     <Badge className="bg-medical-danger text-white">Obrigatório</Badge>
                   )}
+                  {currentQuestion.type === 'photo_evidence' && (
+                    <Badge className="bg-medical-warning text-white">
+                      <Camera className="w-3 h-3 mr-1" />
+                      Evidência Fotográfica
+                    </Badge>
+                  )}
                 </div>
               </div>
             </div>
@@ -229,6 +227,35 @@ const AuditForm = ({ sectorName, questions, onComplete, onBack }: AuditFormProps
             <div>
               <Label className="text-base font-medium mb-4 block">Resposta:</Label>
               {renderQuestionInput()}
+            </div>
+
+            {/* Photo Evidence - Available for all questions */}
+            <div>
+              <Label className="text-base font-medium mb-2 block">
+                Evidências Fotográficas (opcional):
+              </Label>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-4">
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={(e) => handlePhotoUpload(currentQuestion.id, e.target.files)}
+                    className="flex-1"
+                  />
+                  <Camera className="w-5 h-5 text-medical-primary" />
+                </div>
+                {photos[currentQuestion.id] && photos[currentQuestion.id].length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {photos[currentQuestion.id].map((file, index) => (
+                      <Badge key={index} className="bg-medical-success text-white">
+                        <Camera className="w-3 h-3 mr-1" />
+                        {file.name}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Observations */}
