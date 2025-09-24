@@ -52,12 +52,12 @@ const Header = () => {
         
         {/* Powered by AxiaCare */}
         <div className="flex justify-end mt-2">
-          <div className="flex items-center space-x-2 opacity-60 hover:opacity-80 transition-opacity">
-            <span className="text-white/70 text-xs">Powered by</span>
+          <div className="flex items-center space-x-2 bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm opacity-80 hover:opacity-100 transition-all">
+            <span className="text-white/90 text-sm font-medium">Powered by</span>
             <img 
               src={axiacareLogo} 
               alt="AxiaCare" 
-              className="h-4 object-contain"
+              className="h-5 object-contain"
             />
           </div>
         </div>
