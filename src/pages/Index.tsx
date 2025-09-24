@@ -181,27 +181,29 @@ const Index = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <img 
-            src={heroImage} 
-            alt="Sistema RAG - Auditoria Hospitalar" 
-            className="w-full h-full object-cover"
-          />
+      <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
+        {/* Modern gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-medical-primary via-medical-secondary to-medical-accent"></div>
+        <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 via-transparent to-accent/20"></div>
+        
+        {/* Decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
         </div>
-        <div className="absolute inset-0 bg-gradient-medical opacity-5"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center space-y-6 max-w-4xl mx-auto">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center space-y-6 sm:space-y-8 max-w-5xl mx-auto">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-white leading-tight animate-fade-in">
               Sistema RAG
-              <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl bg-gradient-medical bg-clip-text text-transparent font-semibold">
+              <span className="block text-xl sm:text-3xl md:text-4xl lg:text-6xl bg-gradient-to-r from-white to-medical-light bg-clip-text text-transparent font-semibold mt-2">
                 Requisitos de Apoio a Gestão
               </span>
             </h1>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground leading-relaxed px-4">
-              Metodologia de auditoria interna do <strong>Instituto de Cooperação para o Desenvolvimento da Saúde (ICDS)</strong>
+            <p className="text-sm sm:text-lg md:text-xl lg:text-2xl text-white/90 leading-relaxed px-2 sm:px-4 animate-fade-in">
+              Metodologia de auditoria interna do <strong className="text-white">Instituto de Cooperação para o Desenvolvimento da Saúde (ICDS)</strong>
             </p>
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground/80 leading-relaxed px-4">
+            <p className="text-xs sm:text-base md:text-lg text-white/80 leading-relaxed px-2 sm:px-4 max-w-3xl mx-auto animate-fade-in">
               Realize auditorias estruturadas e gere relatórios profissionais para garantir a qualidade e conformidade das unidades hospitalares
             </p>
           </div>
@@ -211,18 +213,21 @@ const Index = () => {
       <div className="container mx-auto px-4 pb-16 space-y-12">
         {/* Start New Audit Section */}
         {!showInstitutionForm && (
-          <section className="text-center py-16">
-            <Card className="max-w-2xl mx-auto shadow-card border-0 bg-gradient-to-br from-card to-card/50">
-              <CardContent className="p-12">
-                <div className="space-y-6">
-                  <div className="p-4 bg-gradient-medical rounded-full w-20 h-20 mx-auto flex items-center justify-center shadow-medical">
-                    <FileText className="w-10 h-10 text-white" />
+          <section className="text-center py-12 sm:py-16 lg:py-20 px-4 sm:px-6">
+            <Card className="max-w-xl sm:max-w-2xl mx-auto shadow-elegant border-0 bg-gradient-to-br from-card via-card/95 to-background backdrop-blur-sm">
+              <CardContent className="p-8 sm:p-12">
+                <div className="space-y-6 sm:space-y-8">
+                  <div className="relative">
+                    <div className="p-4 sm:p-6 bg-gradient-medical rounded-2xl w-16 h-16 sm:w-20 sm:h-20 mx-auto flex items-center justify-center shadow-glow animate-pulse">
+                      <FileText className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+                    </div>
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-accent rounded-full animate-ping"></div>
                   </div>
-                  <div className="space-y-4">
-                    <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
+                  <div className="space-y-3 sm:space-y-4">
+                    <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground leading-tight">
                       Pronto para começar?
                     </h2>
-                    <p className="text-base sm:text-lg text-muted-foreground px-4 sm:px-0">
+                    <p className="text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed px-2 sm:px-4">
                       Configure os dados da instituição e inicie uma nova auditoria hospitalar completa
                     </p>
                   </div>
@@ -230,9 +235,9 @@ const Index = () => {
                     onClick={() => setShowInstitutionForm(true)}
                     variant="medical"
                     size="lg"
-                    className="text-lg px-12 py-6 h-14 shadow-medical hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+                    className="text-base sm:text-lg px-8 sm:px-12 py-4 sm:py-6 h-12 sm:h-14 shadow-glow hover:shadow-elegant transform hover:scale-105 transition-all duration-300 w-full sm:w-auto animate-fade-in"
                   >
-                    <FileText className="w-6 h-6 mr-3" />
+                    <FileText className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
                     Iniciar Nova Auditoria
                   </Button>
                 </div>
@@ -263,22 +268,27 @@ const Index = () => {
 
         {/* Sectors Grid */}
         {showInstitutionForm && selectedSectors.length > 0 && (
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-foreground px-4 sm:px-0">
+          <section className="px-4 sm:px-6">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-6 sm:mb-8 text-foreground animate-fade-in">
               Setores Hospitalares
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-              {sectorsWithStatus.map((sector) => (
-                <SectorCard
-                  key={sector.id}
-                  title={sector.title}
-                  description={sector.description}
-                  icon={sector.icon}
-                  totalRequirements={sector.totalRequirements}
-                  completedRequirements={sector.completedRequirements}
-                  status={sector.status}
-                  onStartAudit={() => handleStartAudit(sector.id)}
-                />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+              {sectorsWithStatus.map((sector, index) => (
+                <div 
+                  key={sector.id} 
+                  className="animate-fade-in hover-scale"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <SectorCard
+                    title={sector.title}
+                    description={sector.description}
+                    icon={sector.icon}
+                    totalRequirements={sector.totalRequirements}
+                    completedRequirements={sector.completedRequirements}
+                    status={sector.status}
+                    onStartAudit={() => handleStartAudit(sector.id)}
+                  />
+                </div>
               ))}
             </div>
           </section>
@@ -286,14 +296,16 @@ const Index = () => {
 
         {/* Recent Audits */}
         {showInstitutionForm && auditResults.length > 0 && (
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-foreground px-4 sm:px-0">
+          <section className="px-4 sm:px-6">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-6 sm:mb-8 text-foreground animate-fade-in">
               Histórico de Auditorias
             </h2>
-            <RecentAudits 
-              auditResults={auditResults} 
-              onViewReport={(result) => {setCurrentAuditResult(result); setAppState('report');}} 
-            />
+            <div className="animate-fade-in">
+              <RecentAudits 
+                auditResults={auditResults} 
+                onViewReport={(result) => {setCurrentAuditResult(result); setAppState('report');}} 
+              />
+            </div>
           </section>
         )}
       </div>

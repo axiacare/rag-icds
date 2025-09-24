@@ -7,7 +7,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { Camera, FileText, CheckCircle, ArrowLeft, ArrowRight } from "lucide-react";
+import { Paperclip, FileText, CheckCircle, ArrowLeft, ArrowRight, Upload, Image } from "lucide-react";
 import { Question } from "@/types/audit";
 import { useToast } from "@/hooks/use-toast";
 
@@ -209,7 +209,7 @@ const AuditForm = ({ sectorName, questions, onComplete, onBack }: AuditFormProps
                   </Badge>
                   {currentQuestion.type === 'photo_evidence' && (
                     <Badge className="bg-medical-warning text-white">
-                      <Camera className="w-3 h-3 mr-1" />
+                      <Image className="w-3 h-3 mr-1" />
                       Evidência Fotográfica
                     </Badge>
                   )}
@@ -241,28 +241,40 @@ const AuditForm = ({ sectorName, questions, onComplete, onBack }: AuditFormProps
 
             {/* Evidence Upload - Available for all questions */}
             <div>
-              <Label className="text-base font-medium mb-2 block">
+              <Label className="text-base font-medium mb-3 block">
                 Anexar Evidências:
               </Label>
-              <div className="space-y-3">
-                <div className="flex items-center space-x-4">
-                  <Input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={(e) => handlePhotoUpload(currentQuestion.id, e.target.files)}
-                    className="flex-1"
-                  />
-                  <Camera className="w-5 h-5 text-medical-primary" />
+              <div className="space-y-4">
+                <div className="relative">
+                  <div className="flex items-center space-x-3">
+                    <div className="relative flex-1">
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={(e) => handlePhotoUpload(currentQuestion.id, e.target.files)}
+                        className="pl-12 h-12 border-2 border-dashed border-medical-primary/30 hover:border-medical-primary/50 transition-colors cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-medical-primary file:text-white hover:file:bg-medical-secondary"
+                      />
+                      <Paperclip className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-medical-primary pointer-events-none" />
+                    </div>
+                    <div className="p-3 bg-medical-primary/10 rounded-lg">
+                      <Upload className="w-5 h-5 text-medical-primary" />
+                    </div>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2 ml-12">
+                    Selecione uma ou mais imagens como evidência
+                  </p>
                 </div>
                 {photos[currentQuestion.id] && photos[currentQuestion.id].length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {photos[currentQuestion.id].map((file, index) => (
-                      <Badge key={index} className="bg-medical-success text-white">
-                        <Camera className="w-3 h-3 mr-1" />
-                        {file.name}
-                      </Badge>
-                    ))}
+                  <div className="bg-medical-success/5 p-4 rounded-lg border border-medical-success/20">
+                    <div className="flex flex-wrap gap-2">
+                      {photos[currentQuestion.id].map((file, index) => (
+                        <Badge key={index} className="bg-medical-success text-white px-3 py-1">
+                          <Paperclip className="w-3 h-3 mr-2" />
+                          {file.name}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
