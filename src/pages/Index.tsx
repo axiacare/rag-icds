@@ -181,40 +181,61 @@ const Index = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="relative py-12 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
+      <section className="relative py-20 overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
           <img 
             src={heroImage} 
             alt="Sistema RAG - Auditoria Hospitalar" 
             className="w-full h-full object-cover"
           />
         </div>
+        <div className="absolute inset-0 bg-gradient-medical opacity-5"></div>
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center space-y-4">
-            <h1 className="text-4xl font-bold text-foreground">
-              Sistema RAG de Auditoria Hospitalar
+          <div className="text-center space-y-6 max-w-4xl mx-auto">
+            <h1 className="text-5xl md:text-6xl font-bold text-foreground leading-tight">
+              Sistema RAG
+              <span className="block text-4xl md:text-5xl bg-gradient-medical bg-clip-text text-transparent font-semibold">
+                Auditoria Hospitalar
+              </span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
               Realize auditorias estruturadas e gere relatórios profissionais para garantir a qualidade e conformidade das unidades hospitalares
             </p>
           </div>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 pb-12 space-y-8">
-        {/* Start New Audit Button */}
+      <div className="container mx-auto px-4 pb-16 space-y-12">
+        {/* Start New Audit Section */}
         {!showInstitutionForm && (
-          <div className="text-center">
-            <Button
-              onClick={() => setShowInstitutionForm(true)}
-              variant="medical"
-              size="lg"
-              className="text-lg px-8 py-6"
-            >
-              <FileText className="w-5 h-5 mr-2" />
-              Iniciar Nova Auditoria
-            </Button>
-          </div>
+          <section className="text-center py-16">
+            <Card className="max-w-2xl mx-auto shadow-card border-0 bg-gradient-to-br from-card to-card/50">
+              <CardContent className="p-12">
+                <div className="space-y-6">
+                  <div className="p-4 bg-gradient-medical rounded-full w-20 h-20 mx-auto flex items-center justify-center shadow-medical">
+                    <FileText className="w-10 h-10 text-white" />
+                  </div>
+                  <div className="space-y-4">
+                    <h2 className="text-3xl font-bold text-foreground">
+                      Pronto para começar?
+                    </h2>
+                    <p className="text-lg text-muted-foreground">
+                      Configure os dados da instituição e inicie uma nova auditoria hospitalar completa
+                    </p>
+                  </div>
+                  <Button
+                    onClick={() => setShowInstitutionForm(true)}
+                    variant="medical"
+                    size="lg"
+                    className="text-lg px-12 py-6 h-14 shadow-medical hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+                  >
+                    <FileText className="w-6 h-6 mr-3" />
+                    Iniciar Nova Auditoria
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
         )}
 
         {/* Institution Form */}
