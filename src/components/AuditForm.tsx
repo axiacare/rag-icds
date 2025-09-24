@@ -229,10 +229,24 @@ const AuditForm = ({ sectorName, questions, onComplete, onBack }: AuditFormProps
               {renderQuestionInput()}
             </div>
 
-            {/* Photo Evidence - Available for all questions */}
+            {/* Observations */}
+            <div>
+              <Label htmlFor="observations" className="text-base font-medium mb-2 block">
+                Observações:
+              </Label>
+              <Textarea
+                id="observations"
+                value={observations[currentQuestion.id] || ''}
+                onChange={(e) => handleObservation(currentQuestion.id, e.target.value)}
+                placeholder="Adicione observações relevantes..."
+                className="min-h-[80px]"
+              />
+            </div>
+
+            {/* Evidence Upload - Available for all questions */}
             <div>
               <Label className="text-base font-medium mb-2 block">
-                Evidências Fotográficas (opcional):
+                Anexar Evidências:
               </Label>
               <div className="space-y-3">
                 <div className="flex items-center space-x-4">
@@ -256,20 +270,6 @@ const AuditForm = ({ sectorName, questions, onComplete, onBack }: AuditFormProps
                   </div>
                 )}
               </div>
-            </div>
-
-            {/* Observations */}
-            <div>
-              <Label htmlFor="observations" className="text-base font-medium mb-2 block">
-                Observações (opcional):
-              </Label>
-              <Textarea
-                id="observations"
-                value={observations[currentQuestion.id] || ''}
-                onChange={(e) => handleObservation(currentQuestion.id, e.target.value)}
-                placeholder="Adicione observações relevantes..."
-                className="min-h-[80px]"
-              />
             </div>
 
             {/* Navigation */}
