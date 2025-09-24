@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/rag-hero.jpg";
 
 type AppState = 'dashboard' | 'audit' | 'report';
@@ -48,6 +49,7 @@ const Index = () => {
     auditors: [],
     selectedSectors: hospitalSectors.map(sector => sector.id),
   });
+  const [showInstitutionForm, setShowInstitutionForm] = useState(false);
 
   const sectorIcons = [
     <Heart className="w-6 h-6" />,
@@ -200,24 +202,43 @@ const Index = () => {
       </section>
 
       <div className="container mx-auto px-4 pb-12 space-y-8">
+        {/* Start New Audit Button */}
+        {!showInstitutionForm && (
+          <div className="text-center">
+            <Button
+              onClick={() => setShowInstitutionForm(true)}
+              variant="medical"
+              size="lg"
+              className="text-lg px-8 py-6"
+            >
+              <FileText className="w-5 h-5 mr-2" />
+              Iniciar Nova Auditoria
+            </Button>
+          </div>
+        )}
+
         {/* Institution Form */}
-        <InstitutionForm 
-          onDataChange={setInstitutionData}
-          selectedSectors={selectedSectors}
-          onSectorToggle={handleSectorToggle}
-        />
+        {showInstitutionForm && (
+          <InstitutionForm 
+            onDataChange={setInstitutionData}
+            selectedSectors={selectedSectors}
+            onSectorToggle={handleSectorToggle}
+          />
+        )}
 
         {/* Stats Overview */}
-        <StatsOverview
-          totalSectors={totalSectors}
-          completedSectors={completedSectors}
-          inProgressSectors={inProgressSectors}
-          pendingSectors={pendingSectors}
-          overallProgress={overallProgress}
-        />
+        {showInstitutionForm && (
+          <StatsOverview
+            totalSectors={totalSectors}
+            completedSectors={completedSectors}
+            inProgressSectors={inProgressSectors}
+            pendingSectors={pendingSectors}
+            overallProgress={overallProgress}
+          />
+        )}
 
         {/* Sectors Grid */}
-        {selectedSectors.length > 0 && (
+        {showInstitutionForm && selectedSectors.length > 0 && (
           <section>
             <h2 className="text-2xl font-bold mb-6 text-foreground">Setores Hospitalares</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -238,7 +259,7 @@ const Index = () => {
         )}
 
         {/* Recent Audits */}
-        {auditResults.length > 0 && (
+        {showInstitutionForm && auditResults.length > 0 && (
           <section>
             <h2 className="text-2xl font-bold mb-6 text-foreground">Histórico de Auditorias</h2>
             <RecentAudits 

@@ -139,7 +139,7 @@ export default function InstitutionForm({ onDataChange, selectedSectors, onSecto
 
         {/* Sector Selection */}
         <div className="space-y-3">
-          <Label className="text-base font-medium">Setores a serem Auditados</Label>
+          <Label className="text-base font-medium">Áreas desta Auditoria</Label>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {hospitalSectors.map((sector) => (
               <div key={sector.id} className="flex items-center space-x-2">
