@@ -2,20 +2,19 @@ import { FileText, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import icdsLogo from "@/assets/icds-logo.png";
+import axiacareLogo from "@/assets/axiacare-logo.png";
 
 const Header = () => {
   return (
     <header className="bg-gradient-medical shadow-medical sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center space-x-3 hover:opacity-90 transition-opacity">
-            <div className="p-2 bg-white/90 rounded-lg backdrop-blur-sm">
-              <img 
-                src={icdsLogo} 
-                alt="ICDS Logo" 
-                className="w-8 h-8 object-contain"
-              />
-            </div>
+          <Link to="/" className="flex items-center space-x-4 hover:opacity-90 transition-opacity">
+            <img 
+              src={icdsLogo} 
+              alt="ICDS - Gestão em Saúde" 
+              className="h-10 md:h-12 object-contain"
+            />
             <div className="hidden sm:block">
               <h1 className="text-xl md:text-2xl font-bold text-white leading-tight">
                 RAG
@@ -48,6 +47,18 @@ const Header = () => {
                 <span className="hidden sm:inline">Admin</span>
               </Button>
             </Link>
+          </div>
+        </div>
+        
+        {/* Powered by AxiaCare */}
+        <div className="flex justify-end mt-2">
+          <div className="flex items-center space-x-2 opacity-60 hover:opacity-80 transition-opacity">
+            <span className="text-white/70 text-xs">Powered by</span>
+            <img 
+              src={axiacareLogo} 
+              alt="AxiaCare" 
+              className="h-4 object-contain"
+            />
           </div>
         </div>
       </div>
