@@ -13,7 +13,7 @@ const Header = () => {
             <img 
               src={icdsLogo} 
               alt="ICDS - Gestão em Saúde" 
-              className="h-10 md:h-12 object-contain"
+              className="h-12 md:h-16 object-contain"
             />
             <div className="hidden sm:block">
               <h1 className="text-xl md:text-2xl font-bold text-white leading-tight">
@@ -52,12 +52,12 @@ const Header = () => {
         
         {/* Powered by AxiaCare */}
         <div className="flex justify-end mt-2">
-          <div className="flex items-center space-x-2 bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm opacity-80 hover:opacity-100 transition-all">
-            <span className="text-white/90 text-sm font-medium">Powered by</span>
+          <div className="flex items-center space-x-2 bg-white/80 px-3 py-1 rounded-full backdrop-blur-sm hover:bg-white/90 transition-all">
+            <span className="text-gray-800 text-sm font-medium">Powered by</span>
             <img 
               src={axiacareLogo} 
               alt="AxiaCare" 
-              className="h-5 object-contain"
+              className="h-6 object-contain"
             />
           </div>
         </div>
