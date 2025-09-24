@@ -5,6 +5,7 @@ import StatsOverview from "@/components/StatsOverview";
 import AuditForm from "@/components/AuditForm";
 import AuditReport from "@/components/AuditReport";
 import RecentAudits from "@/components/RecentAudits";
+import InstitutionForm from "@/components/InstitutionForm";
 import { hospitalSectors } from "@/data/sectors";
 import { AuditResult } from "@/types/audit";
 import { 
@@ -24,11 +25,29 @@ import heroImage from "@/assets/rag-hero.jpg";
 
 type AppState = 'dashboard' | 'audit' | 'report';
 
+interface InstitutionData {
+  name: string;
+  registrationNumber: string;
+  auditDate: Date | undefined;
+  auditors: string[];
+  selectedSectors: number[];
+}
+
 const Index = () => {
   const [appState, setAppState] = useState<AppState>('dashboard');
   const [currentSector, setCurrentSector] = useState<number | null>(null);
   const [auditResults, setAuditResults] = useState<AuditResult[]>([]);
   const [currentAuditResult, setCurrentAuditResult] = useState<AuditResult | null>(null);
+  const [selectedSectors, setSelectedSectors] = useState<number[]>(
+    hospitalSectors.map(sector => sector.id)
+  );
+  const [institutionData, setInstitutionData] = useState<InstitutionData>({
+    name: '',
+    registrationNumber: '',
+    auditDate: undefined,
+    auditors: [],
+    selectedSectors: hospitalSectors.map(sector => sector.id),
+  });
 
   const sectorIcons = [
     <Heart className="w-6 h-6" />,
@@ -41,8 +60,20 @@ const Index = () => {
     <Users className="w-6 h-6" />
   ];
 
-  // Create sectors with icons and status
-  const sectorsWithStatus = hospitalSectors.map((sector, index) => {
+  const handleSectorToggle = (sectorId: number) => {
+    setSelectedSectors(prev => 
+      prev.includes(sectorId) 
+        ? prev.filter(id => id !== sectorId)
+        : [...prev, sectorId]
+    );
+  };
+
+  // Filter sectors based on selection and create sectors with icons and status
+  const filteredSectors = hospitalSectors.filter(sector => 
+    selectedSectors.includes(sector.id)
+  );
+  
+  const sectorsWithStatus = filteredSectors.map((sector, index) => {
     const existingResult = auditResults.find(r => r.sectorId === sector.id);
     let status: 'pending' | 'in-progress' | 'completed' = 'pending';
     let completedQuestions = 0;
@@ -109,7 +140,7 @@ const Index = () => {
   };
 
   // Calculate stats
-  const totalSectors = sectorsWithStatus.length;
+  const totalSectors = filteredSectors.length;
   const completedSectors = sectorsWithStatus.filter(s => s.status === "completed").length;
   const inProgressSectors = 0; // No in-progress status in current implementation
   const pendingSectors = sectorsWithStatus.filter(s => s.status === "pending").length;
@@ -169,6 +200,13 @@ const Index = () => {
       </section>
 
       <div className="container mx-auto px-4 pb-12 space-y-8">
+        {/* Institution Form */}
+        <InstitutionForm 
+          onDataChange={setInstitutionData}
+          selectedSectors={selectedSectors}
+          onSectorToggle={handleSectorToggle}
+        />
+
         {/* Stats Overview */}
         <StatsOverview
           totalSectors={totalSectors}
@@ -179,23 +217,25 @@ const Index = () => {
         />
 
         {/* Sectors Grid */}
-        <section>
-          <h2 className="text-2xl font-bold mb-6 text-foreground">Setores Hospitalares</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {sectorsWithStatus.map((sector) => (
-              <SectorCard
-                key={sector.id}
-                title={sector.title}
-                description={sector.description}
-                icon={sector.icon}
-                totalQuestions={sector.totalQuestions}
-                completedQuestions={sector.completedQuestions}
-                status={sector.status}
-                onStartAudit={() => handleStartAudit(sector.id)}
-              />
-            ))}
-          </div>
-        </section>
+        {selectedSectors.length > 0 && (
+          <section>
+            <h2 className="text-2xl font-bold mb-6 text-foreground">Setores Hospitalares</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {sectorsWithStatus.map((sector) => (
+                <SectorCard
+                  key={sector.id}
+                  title={sector.title}
+                  description={sector.description}
+                  icon={sector.icon}
+                  totalQuestions={sector.totalQuestions}
+                  completedQuestions={sector.completedQuestions}
+                  status={sector.status}
+                  onStartAudit={() => handleStartAudit(sector.id)}
+                />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Recent Audits */}
         {auditResults.length > 0 && (
