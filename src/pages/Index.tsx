@@ -23,7 +23,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/rag-hero.jpg";
-import icdsWatermark from "@/assets/icds-watermark.png";
+import icdsLogo from "@/assets/icds-logo.png";
 
 type AppState = 'dashboard' | 'audit' | 'report';
 
@@ -193,9 +193,9 @@ const Index = () => {
         {/* ICDS Watermark */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <img 
-            src={icdsWatermark} 
+            src={icdsLogo} 
             alt="ICDS Watermark" 
-            className="w-64 md:w-96 lg:w-[500px] opacity-5 object-contain"
+            className="w-64 md:w-96 lg:w-[500px] opacity-5 object-contain filter grayscale"
           />
         </div>
         <div className="absolute inset-0 bg-gradient-medical opacity-5"></div>
