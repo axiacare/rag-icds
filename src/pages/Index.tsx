@@ -196,23 +196,48 @@ const Index = () => {
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center space-y-6 sm:space-y-8 max-w-4xl mx-auto">
-            <div className="space-y-4">
-              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
-                Sistema RAG
-              </h1>
-              <p className="text-lg sm:text-2xl md:text-3xl lg:text-4xl text-white/95 font-medium leading-tight">
-                Requisitos de Apoio à Gestão
-              </p>
+          <div className="text-center space-y-8 sm:space-y-10 max-w-5xl mx-auto">
+            {/* Main RAG Title with enhanced styling */}
+            <div className="space-y-6">
+              <div className="relative inline-block">
+                <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white leading-none tracking-tight">
+                  RAG
+                </h1>
+                <div className="absolute -inset-4 bg-gradient-to-r from-medical-accent/20 to-medical-primary/20 rounded-3xl blur-2xl -z-10 animate-pulse"></div>
+              </div>
+              
+              {/* Direct subtitle with RAG meaning */}
+              <div className="space-y-3">
+                <p className="text-xl sm:text-3xl md:text-4xl lg:text-5xl text-white/95 font-bold leading-tight">
+                  Requisitos de Apoio à Gestão
+                </p>
+                <div className="w-24 sm:w-32 h-1 bg-gradient-to-r from-medical-accent to-white mx-auto rounded-full"></div>
+              </div>
             </div>
             
-            <div className="space-y-4 max-w-3xl mx-auto">
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 leading-relaxed">
-                Metodologia de auditoria interna do <strong className="text-white font-semibold">Instituto de Cooperação para o Desenvolvimento da Saúde (ICDS)</strong>
-              </p>
-              <p className="text-sm sm:text-base md:text-lg text-white/80 leading-relaxed">
+            {/* Enhanced description with better visual hierarchy */}
+            <div className="space-y-6 max-w-4xl mx-auto">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-white/20 shadow-2xl">
+                <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/95 leading-relaxed font-medium">
+                  Metodologia de auditoria interna do 
+                  <span className="block mt-2 text-white font-bold bg-gradient-to-r from-medical-accent to-white bg-clip-text text-transparent">
+                    Instituto de Cooperação para o Desenvolvimento da Saúde (ICDS)
+                  </span>
+                </p>
+              </div>
+              
+              <p className="text-base sm:text-lg md:text-xl text-white/85 leading-relaxed max-w-3xl mx-auto">
                 Realize auditorias estruturadas e gere relatórios profissionais para garantir a qualidade e conformidade das unidades hospitalares
               </p>
+            </div>
+
+            {/* Enhanced call-to-action with floating animation */}
+            <div className="pt-4 sm:pt-6">
+              <div className="inline-flex items-center space-x-4 bg-white/15 backdrop-blur-md rounded-full px-6 py-3 border border-white/30 animate-bounce">
+                <div className="w-3 h-3 bg-medical-accent rounded-full animate-pulse"></div>
+                <span className="text-white/90 font-medium text-sm sm:text-base">Sistema Profissional de Auditoria</span>
+                <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+              </div>
             </div>
           </div>
         </div>
