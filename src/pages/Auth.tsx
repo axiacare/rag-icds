@@ -10,6 +10,7 @@ import { Loader2, LogIn, UserPlus, Shield, Stethoscope } from 'lucide-react';
 import { z } from 'zod';
 import icdsMainLogo from "@/assets/icds-main-logo.png";
 import axiacareLogo from "@/assets/axiacare-logo.png";
+import logoGuilherme from "@/assets/logo-guilherme.png";
 import Footer from "@/components/Footer";
 
 const authSchema = z.object({
@@ -121,8 +122,8 @@ const Auth = () => {
             <div className="flex items-center justify-center space-x-6 animate-fade-in">
               <div className="bg-white rounded-lg p-2 sm:p-3 shadow-lg">
                 <img 
-                  src={icdsMainLogo} 
-                  alt="ICDS Logo" 
+                  src={logoGuilherme} 
+                  alt="Logo Guilherme" 
                   className="h-8 sm:h-10 md:h-12 w-auto"
                   loading="eager"
                 />
