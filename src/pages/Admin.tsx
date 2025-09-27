@@ -322,7 +322,7 @@ const Admin = () => {
                   <Label htmlFor="app-name">Nome do Sistema</Label>
                   <Input
                     id="app-name"
-                    defaultValue="Sistema RAG - Requisitos de Apoio a Gestão"
+                    defaultValue="Sistema RAG - Requisitos de Apoio à Gestão"
                     className="mt-1"
                   />
                 </div>

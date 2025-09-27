@@ -29,7 +29,7 @@ const Header = () => {
             <Link to="/" className="text-white hover:opacity-90 transition-opacity">
               <h1 className="text-lg sm:text-xl md:text-2xl font-bold">RAG</h1>
               <p className="text-xs sm:text-sm opacity-90 hidden sm:block">
-                Requisitos de Apoio a Gestão
+                Requisitos de Apoio à Gestão
               </p>
             </Link>
           </div>
