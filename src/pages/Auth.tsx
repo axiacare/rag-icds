@@ -304,13 +304,6 @@ const Auth = () => {
                 </CardContent>
               </Card>
             </div>
-
-            {/* Footer info */}
-            <div className="text-center animate-fade-in" style={{ animationDelay: '0.9s' }}>
-              <p className="text-white/70 text-xs font-inter">
-                Sistema Profissional de Auditoria Hospitalar
-              </p>
-            </div>
           </div>
         </div>
       </section>
