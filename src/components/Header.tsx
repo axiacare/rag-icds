@@ -16,13 +16,15 @@ const Header = () => {
               rel="noopener noreferrer"
               className="hover:opacity-90 transition-opacity"
             >
-              <div className="bg-white rounded-lg p-2 sm:p-3 shadow-lg">
-                <img 
-                  src={icdsMainLogo} 
-                  alt="ICDS Logo" 
-                  className="h-6 sm:h-8 md:h-10 w-auto"
-                />
-              </div>
+            <div className="bg-white rounded-lg p-2 sm:p-3 shadow-lg">
+              <img 
+                src={icdsMainLogo} 
+                alt="ICDS Logo" 
+                className="h-6 sm:h-8 md:h-10 w-auto"
+                loading="eager"
+                decoding="async"
+              />
+            </div>
             </a>
             <Link to="/" className="text-white hover:opacity-90 transition-opacity">
               <h1 className="text-lg sm:text-xl md:text-2xl font-bold">RAG</h1>
@@ -45,6 +47,8 @@ const Header = () => {
                 src={axiacareLogo} 
                 alt="AxiaCare" 
                 className="h-4 sm:h-6 object-contain"
+                loading="lazy"
+                decoding="async"
               />
             </a>
             

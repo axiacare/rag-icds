@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -36,22 +38,31 @@ All colors MUST be HSL.
     --input: 210 40% 90%;
     --ring: 210 85% 45%;
 
-    /* Medical theme colors - Based on ICDS brand colors */
-    --medical-primary: 223 47% 33%;
+    /* Enhanced Medical theme colors - Professional gradients */
+    --medical-primary: 223 47% 35%;
+    --medical-primary-light: 223 47% 45%;
+    --medical-primary-dark: 223 47% 25%;
     --medical-secondary: 197 100% 45%;
+    --medical-secondary-light: 197 100% 55%;
+    --medical-accent: 197 85% 50%;
+    --medical-accent-light: 197 85% 60%;
     --medical-success: 142 76% 36%;
     --medical-warning: 38 92% 50%;
     --medical-danger: 0 84% 60%;
     
-    /* Gradients */
-    --gradient-medical: linear-gradient(135deg, hsl(223 47% 33%) 0%, hsl(210 65% 45%) 100%);
+    /* Enhanced Gradients - More sophisticated */
+    --gradient-medical: linear-gradient(135deg, hsl(223 47% 35%) 0%, hsl(210 65% 45%) 50%, hsl(197 100% 45%) 100%);
+    --gradient-medical-soft: linear-gradient(135deg, hsl(223 47% 35% / 0.9) 0%, hsl(210 65% 45% / 0.8) 100%);
     --gradient-subtle: linear-gradient(135deg, hsl(210 20% 98%) 0%, hsl(210 40% 96%) 100%);
+    --gradient-elegant: linear-gradient(135deg, hsl(223 47% 35%) 0%, hsl(197 100% 45%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(223 47% 25%) 0%, hsl(223 47% 35%) 50%, hsl(197 100% 45%) 100%);
     
-    /* Shadows */
+    /* Enhanced Shadows - More sophisticated */
     --shadow-medical: 0 4px 20px -4px hsl(223 47% 33% / 0.25);
     --shadow-card: 0 2px 10px -2px hsl(210 40% 15% / 0.1);
-    --shadow-elegant: 0 10px 30px -10px hsl(223 47% 33% / 0.3);
-    --shadow-glow: 0 0 40px hsl(197 100% 45% / 0.4);
+    --shadow-elegant: 0 20px 60px -20px hsl(223 47% 33% / 0.4);
+    --shadow-glow: 0 0 60px hsl(197 100% 45% / 0.5);
+    --shadow-soft: 0 8px 32px -8px hsl(223 47% 33% / 0.15);
 
     --radius: 0.75rem;
 
@@ -110,26 +121,68 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-inter;
     font-feature-settings: "rlig" 1, "calt" 1;
+    scroll-behavior: smooth;
+  }
+
+  /* Enhanced typography */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-inter;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
 
-/* Animations and utilities */
+/* Enhanced animations and utilities */
 @layer utilities {
-  .animate-fade-in {
-    opacity: 0;
-    animation: fadeIn 0.6s ease-out forwards;
+  /* Loading skeleton animation */
+  .skeleton {
+    @apply animate-pulse bg-muted rounded;
   }
 
+  /* Enhanced fade animations */
+  .animate-fade-in {
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+
+  .animate-fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  .animate-slide-in-left {
+    opacity: 0;
+    transform: translateX(-30px);
+    animation: slideInLeft 0.8s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    opacity: 0;
+    transform: scale(0.95);
+    animation: scaleIn 0.6s ease-out forwards;
+  }
+
+  /* Enhanced hover effects */
   .hover-scale {
-    transition: transform 0.2s ease-out;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .hover-scale:hover {
-    transform: scale(1.02);
+    transform: scale(1.03) translateY(-2px);
   }
 
+  .hover-glow:hover {
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* Mobile-optimized touch effects */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Enhanced line clamps */
   .line-clamp-2 {
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -143,8 +196,38 @@ All colors MUST be HSL.
     -webkit-line-clamp: 3;
     overflow: hidden;
   }
+
+  /* Performance optimization classes */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  /* RAG title special effects */
+  .rag-title {
+    background: linear-gradient(135deg, 
+      hsl(0 0% 100%) 0%, 
+      hsl(197 100% 45%) 25%, 
+      hsl(0 0% 100%) 50%, 
+      hsl(197 100% 45%) 75%, 
+      hsl(0 0% 100%) 100%
+    );
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  .rag-glow {
+    filter: drop-shadow(0 0 20px hsl(197 100% 45% / 0.3));
+  }
 }
 
+/* Enhanced keyframes */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -153,5 +236,79 @@ All colors MUST be HSL.
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    background-position: 200% 50%;
+  }
+  50% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Mobile-first responsive optimizations */
+@media (max-width: 640px) {
+  .container {
+    @apply px-3;
+  }
+  
+  /* Optimize touch targets for mobile */
+  button, [role="button"], .touch-target {
+    @apply min-h-[48px] min-w-[48px];
+  }
+  
+  /* Better mobile typography */
+  .mobile-title {
+    font-size: clamp(2rem, 8vw, 4rem);
+    line-height: 1.1;
+  }
+  
+  .mobile-subtitle {
+    font-size: clamp(1.25rem, 4vw, 2rem);
+    line-height: 1.3;
   }
 }

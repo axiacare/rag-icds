@@ -14,7 +14,9 @@ const Footer = () => {
             <img 
               src={axiacareImage} 
               alt="AxiaCare" 
-              className="h-12 sm:h-16 w-auto opacity-90" 
+              className="h-12 sm:h-16 w-auto opacity-90"
+              loading="lazy"
+              decoding="async"
             />
           </a>
           

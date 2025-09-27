@@ -181,99 +181,101 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-subtle">
       <Header />
       
-      {/* Hero Section */}
-      <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
-        {/* Clean medical gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-medical-primary to-medical-secondary"></div>
+      {/* Hero Section - Enhanced with better performance and mobile optimization */}
+      <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 overflow-hidden">
+        {/* Optimized gradient background with better performance */}
+        <div className="absolute inset-0 bg-gradient-hero will-change-transform"></div>
         
-        {/* Subtle overlay for text readability */}
-        <div className="absolute inset-0 bg-black/10"></div>
+        {/* Enhanced overlay for better text contrast */}
+        <div className="absolute inset-0 bg-black/15 backdrop-blur-sm"></div>
         
-        {/* Decorative elements */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          <div className="absolute top-20 right-10 w-32 h-32 bg-white/5 rounded-full blur-xl"></div>
-          <div className="absolute bottom-20 left-10 w-40 h-40 bg-white/5 rounded-full blur-xl"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/3 rounded-full blur-3xl"></div>
+        {/* Optimized decorative elements with reduced complexity */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-10 right-5 sm:top-20 sm:right-10 w-24 h-24 sm:w-32 sm:h-32 bg-white/10 rounded-full blur-2xl animate-float"></div>
+          <div className="absolute bottom-10 left-5 sm:bottom-20 sm:left-10 w-32 h-32 sm:w-40 sm:h-40 bg-medical-accent/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 sm:w-96 sm:h-96 bg-white/5 rounded-full blur-3xl"></div>
         </div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center space-y-8 sm:space-y-10 max-w-5xl mx-auto">
-            {/* Main RAG Title with enhanced styling */}
-            <div className="space-y-6">
-              <div className="relative inline-block">
-                <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-none tracking-tight">
+        <div className="container mx-auto px-3 sm:px-4 lg:px-8 relative z-10">
+          <div className="text-center space-y-6 sm:space-y-8 md:space-y-10 max-w-6xl mx-auto">
+            {/* Enhanced RAG Title with better typography and mobile optimization */}
+            <div className="space-y-4 sm:space-y-6">
+              <div className="relative inline-block animate-fade-in">
+                <h1 className="mobile-title sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-playfair font-bold leading-none tracking-tight rag-title rag-glow will-change-transform backface-hidden">
                   RAG
                 </h1>
-                <div className="absolute -inset-4 bg-gradient-to-r from-medical-accent/20 to-medical-primary/20 rounded-3xl blur-2xl -z-10 animate-pulse"></div>
+                <div className="absolute -inset-2 sm:-inset-4 bg-gradient-to-r from-medical-accent/30 to-medical-primary/30 rounded-3xl blur-2xl -z-10 animate-pulse"></div>
               </div>
               
-              {/* Direct subtitle with RAG meaning */}
-              <div className="space-y-3">
-                <p className="text-xl sm:text-3xl md:text-4xl lg:text-5xl text-white/95 font-bold leading-tight">
+              {/* Enhanced subtitle with better mobile typography */}
+              <div className="space-y-2 sm:space-y-3 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+                <p className="mobile-subtitle sm:text-3xl md:text-4xl lg:text-5xl text-white/98 font-inter font-bold leading-tight">
                   Requisitos de Apoio à Gestão
                 </p>
-                <div className="w-24 sm:w-32 h-1 bg-gradient-to-r from-medical-accent to-white mx-auto rounded-full"></div>
+                <div className="w-16 sm:w-24 md:w-32 h-1 bg-gradient-to-r from-medical-accent to-white mx-auto rounded-full animate-scale-in" style={{ animationDelay: '0.6s' }}></div>
               </div>
             </div>
             
-            {/* Enhanced description with better visual hierarchy */}
-            <div className="space-y-6 max-w-4xl mx-auto">
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-white/20 shadow-2xl">
-                <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/95 leading-relaxed font-medium">
+            {/* Enhanced description with better visual hierarchy and loading optimization */}
+            <div className="space-y-4 sm:space-y-6 max-w-5xl mx-auto animate-slide-in-left" style={{ animationDelay: '0.9s' }}>
+              <div className="bg-white/15 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 border border-white/30 shadow-elegant hover-glow transition-all duration-300">
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-white/98 leading-relaxed font-inter font-medium">
                   Metodologia de auditoria interna do 
-                  <span className="block mt-2 text-white font-bold bg-gradient-to-r from-medical-accent to-white bg-clip-text text-transparent">
+                  <span className="block mt-1 sm:mt-2 text-white font-bold">
                     Instituto de Cooperação para o Desenvolvimento da Saúde (ICDS)
                   </span>
                 </p>
               </div>
               
-              <p className="text-base sm:text-lg md:text-xl text-white/85 leading-relaxed max-w-3xl mx-auto">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 leading-relaxed max-w-4xl mx-auto font-inter">
                 Realize auditorias estruturadas e gere relatórios profissionais para garantir a qualidade e conformidade das unidades hospitalares
               </p>
             </div>
 
-            {/* Enhanced call-to-action with floating animation */}
-            <div className="pt-4 sm:pt-6">
-              <div className="inline-flex items-center space-x-4 bg-white/15 backdrop-blur-md rounded-full px-6 py-3 border border-white/30 animate-bounce">
-                <div className="w-3 h-3 bg-medical-accent rounded-full animate-pulse"></div>
-                <span className="text-white/90 font-medium text-sm sm:text-base">Sistema Profissional de Auditoria</span>
-                <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+            {/* Enhanced call-to-action with better mobile interaction */}
+            <div className="pt-2 sm:pt-4 lg:pt-6 animate-scale-in" style={{ animationDelay: '1.2s' }}>
+              <div className="inline-flex items-center space-x-3 sm:space-x-4 bg-white/20 backdrop-blur-md rounded-full px-4 sm:px-6 py-2 sm:py-3 border border-white/40 shadow-soft hover:bg-white/25 transition-all duration-300 touch-target">
+                <div className="w-2 h-2 sm:w-3 sm:h-3 bg-medical-accent rounded-full animate-pulse"></div>
+                <span className="text-white/95 font-inter font-medium text-xs sm:text-sm md:text-base">Sistema Profissional de Auditoria</span>
+                <div className="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 pb-16 space-y-12">
-        {/* Start New Audit Section */}
+      <div className="container mx-auto px-3 sm:px-4 lg:px-8 pb-12 sm:pb-16 space-y-8 sm:space-y-12">
+        {/* Enhanced Start New Audit Section with better mobile optimization */}
         {!showInstitutionForm && (
-          <section className="text-center py-12 sm:py-16 lg:py-20 px-4 sm:px-6">
-            <Card className="max-w-xl sm:max-w-2xl mx-auto shadow-elegant border-0 bg-gradient-to-br from-card via-card/95 to-background backdrop-blur-sm">
-              <CardContent className="p-8 sm:p-12">
-                <div className="space-y-6 sm:space-y-8">
-                  <div className="relative">
-                    <div className="p-4 sm:p-6 bg-gradient-medical rounded-2xl w-16 h-16 sm:w-20 sm:h-20 mx-auto flex items-center justify-center shadow-glow animate-pulse">
-                      <FileText className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+          <section className="text-center py-8 sm:py-12 lg:py-16 xl:py-20">
+            <Card className="max-w-lg sm:max-w-xl lg:max-w-2xl mx-auto shadow-elegant border-0 bg-gradient-to-br from-card/95 via-card to-background/95 backdrop-blur-sm hover-scale hover-glow transition-all duration-300">
+              <CardContent className="p-6 sm:p-8 lg:p-12">
+                <div className="space-y-4 sm:space-y-6 lg:space-y-8">
+                  <div className="relative animate-scale-in">
+                    <div className="p-3 sm:p-4 lg:p-6 bg-gradient-medical rounded-2xl w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 mx-auto flex items-center justify-center shadow-glow animate-float">
+                      <FileText className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-white" />
                     </div>
-                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-accent rounded-full animate-ping"></div>
+                    <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-4 h-4 sm:w-6 sm:h-6 bg-accent rounded-full animate-ping"></div>
                   </div>
-                  <div className="space-y-3 sm:space-y-4">
-                    <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground leading-tight">
+                  <div className="space-y-2 sm:space-y-3 lg:space-y-4 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+                    <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground leading-tight font-inter">
                       Pronto para começar?
                     </h2>
-                    <p className="text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed px-2 sm:px-4">
+                    <p className="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground leading-relaxed px-1 sm:px-2 lg:px-4 font-inter">
                       Configure os dados da instituição e inicie uma nova auditoria hospitalar completa
                     </p>
                   </div>
-                  <Button
-                    onClick={() => setShowInstitutionForm(true)}
-                    variant="medical"
-                    size="lg"
-                    className="text-base sm:text-lg px-8 sm:px-12 py-4 sm:py-6 h-12 sm:h-14 shadow-glow hover:shadow-elegant transform hover:scale-105 transition-all duration-300 w-full sm:w-auto animate-fade-in"
-                  >
-                    <FileText className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
-                    Iniciar Nova Auditoria
-                  </Button>
+                  <div className="animate-fade-in" style={{ animationDelay: '0.6s' }}>
+                    <Button
+                      onClick={() => setShowInstitutionForm(true)}
+                      variant="medical"
+                      size="lg"
+                      className="text-sm sm:text-base lg:text-lg px-6 sm:px-8 lg:px-12 py-3 sm:py-4 lg:py-6 h-10 sm:h-12 lg:h-14 shadow-glow hover:shadow-elegant transform hover:scale-105 transition-all duration-300 w-full sm:w-auto font-inter font-medium touch-target"
+                    >
+                      <FileText className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 mr-2 sm:mr-3" />
+                      Iniciar Nova Auditoria
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -300,17 +302,17 @@ const Index = () => {
           />
         )}
 
-        {/* Sectors Grid */}
+        {/* Enhanced Sectors Grid with better mobile layout */}
         {showInstitutionForm && selectedSectors.length > 0 && (
-          <section className="px-4 sm:px-6">
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-6 sm:mb-8 text-foreground animate-fade-in">
+          <section className="animate-fade-in">
+            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-4 sm:mb-6 lg:mb-8 text-foreground font-inter animate-slide-in-left">
               Módulos Hospitalares
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 xl:gap-8">
               {sectorsWithStatus.map((sector, index) => (
                 <div 
                   key={sector.id} 
-                  className="animate-fade-in hover-scale"
+                  className="animate-fade-in-up hover-scale will-change-transform"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <SectorCard
@@ -328,13 +330,13 @@ const Index = () => {
           </section>
         )}
 
-        {/* Recent Audits */}
+        {/* Enhanced Recent Audits with better mobile layout */}
         {showInstitutionForm && auditResults.length > 0 && (
-          <section className="px-4 sm:px-6">
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-6 sm:mb-8 text-foreground animate-fade-in">
+          <section className="animate-fade-in">
+            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-4 sm:mb-6 lg:mb-8 text-foreground font-inter animate-slide-in-left">
               Histórico de Auditorias
             </h2>
-            <div className="animate-fade-in">
+            <div className="animate-fade-in-up">
               <RecentAudits 
                 auditResults={auditResults} 
                 onViewReport={(result) => {setCurrentAuditResult(result); setAppState('report');}} 
