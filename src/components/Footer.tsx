@@ -17,6 +17,7 @@ const Footer = () => {
               className="h-12 sm:h-16 w-auto opacity-90"
               loading="lazy"
               decoding="async"
+              fetchPriority="low"
             />
           </a>
           

@@ -26,6 +26,7 @@ const Header = () => {
                 className="h-6 sm:h-8 md:h-10 w-auto"
                 loading="eager"
                 decoding="async"
+                fetchPriority="high"
               />
             </div>
             </a>
@@ -50,8 +51,9 @@ const Header = () => {
                 src={axiacareLogo} 
                 alt="AxiaCare" 
                 className="h-8 md:h-10 object-contain"
-                loading="lazy"
+                loading="eager"
                 decoding="async"
+                fetchPriority="high"
               />
             </a>
             

@@ -126,6 +126,8 @@ const Auth = () => {
                   alt="ICDS Logo" 
                   className="h-8 sm:h-10 md:h-12 w-auto"
                   loading="eager"
+                  decoding="async"
+                  fetchPriority="high"
                 />
               </div>
               
@@ -142,6 +144,8 @@ const Auth = () => {
                   alt="AxiaCare Logo" 
                   className="h-6 sm:h-8 md:h-10 object-contain"
                   loading="eager"
+                  decoding="async"
+                  fetchPriority="high"
                 />
               </div>
             </div>
@@ -174,6 +178,9 @@ const Auth = () => {
                       src={logoGuilherme} 
                       alt="Logo Guilherme" 
                       className="w-8 h-8 object-contain"
+                      loading="eager"
+                      decoding="async"
+                      fetchPriority="high"
                     />
                   </div>
                   <div className="space-y-2">
