@@ -36,9 +36,21 @@ const Auth = () => {
     }
   }, [user, navigate]);
 
-  const handleQuickLogin = () => {
-    setFormData({ email: 'admin@teste.com', password: 'admin123', fullName: 'Administrador' });
+  const handleTestLogin = async () => {
+    setLoading(true);
     setError(null);
+    
+    try {
+      const result = await signIn('admin@teste.com', 'admin123');
+      if (result.error) {
+        setError('Usuário de teste não encontrado ou credenciais incorretas.');
+      }
+    } catch (err) {
+      console.error('Error in test login:', err);
+      setError('Erro ao fazer login de teste.');
+    }
+    
+    setLoading(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -171,23 +183,39 @@ const Auth = () => {
                 </CardHeader>
                 
                 <CardContent className="space-y-6">
-                  {/* Botão de teste */}
+                  {/* Botão de Login de Teste - SEPARADO */}
                    {isLogin && (
-                    <div className="p-3 bg-accent/10 rounded-lg border border-accent/20">
-                      <p className="text-xs text-muted-foreground mb-2 text-center">🧪 Acesso de teste:</p>
+                    <div className="p-4 bg-muted/50 rounded-lg border border-border/50">
+                      <p className="text-sm text-muted-foreground mb-3 text-center font-medium">
+                        Acesso de Teste do Sistema
+                      </p>
                       <Button
                         type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={handleQuickLogin}
-                        className="w-full text-xs"
+                        variant="secondary"
+                        size="default"
+                        onClick={handleTestLogin}
+                        className="w-full"
                         disabled={loading}
                       >
-                        <Shield className="w-3 h-3 mr-2" />
-                        {loading ? 'Processando...' : 'Preencher Dados de Teste'}
+                        <Shield className="w-4 h-4 mr-2" />
+                        {loading ? 'Entrando...' : 'Entrar com Login de Teste'}
                       </Button>
+                      <p className="text-xs text-muted-foreground mt-2 text-center">
+                        admin@teste.com / admin123
+                      </p>
                     </div>
                   )}
+
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-card px-2 text-muted-foreground">
+                        OU USE SEU LOGIN OFICIAL
+                      </span>
+                    </div>
+                  </div>
 
                   <form onSubmit={handleSubmit} className="space-y-4">
                     {!isLogin && (
