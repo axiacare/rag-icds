@@ -201,7 +201,7 @@ const Index = () => {
             {/* Enhanced RAG Title with better typography and mobile optimization */}
             <div className="space-y-4 sm:space-y-6">
               <div className="relative inline-block animate-fade-in">
-                <h1 className="mobile-title sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-playfair font-bold leading-none tracking-tight rag-title rag-glow will-change-transform backface-hidden">
+                <h1 className="mobile-title sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-inter font-black leading-none tracking-tight rag-title rag-glow will-change-transform backface-hidden">
                   RAG
                 </h1>
                 <div className="absolute -inset-2 sm:-inset-4 bg-gradient-to-r from-medical-accent/30 to-medical-primary/30 rounded-3xl blur-2xl -z-10 animate-pulse"></div>
@@ -209,7 +209,7 @@ const Index = () => {
               
               {/* Enhanced subtitle with better mobile typography */}
               <div className="space-y-2 sm:space-y-3 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-                <p className="mobile-subtitle sm:text-3xl md:text-4xl lg:text-5xl text-white/98 font-inter font-bold leading-tight">
+                <p className="mobile-subtitle sm:text-3xl md:text-4xl lg:text-5xl text-white font-inter font-bold leading-tight">
                   Requisitos de Apoio à Gestão
                 </p>
                 <div className="w-16 sm:w-24 md:w-32 h-1 bg-gradient-to-r from-medical-accent to-white mx-auto rounded-full animate-scale-in" style={{ animationDelay: '0.6s' }}></div>
@@ -219,7 +219,7 @@ const Index = () => {
             {/* Enhanced description with better visual hierarchy and loading optimization */}
             <div className="space-y-4 sm:space-y-6 max-w-5xl mx-auto animate-slide-in-left" style={{ animationDelay: '0.9s' }}>
               <div className="bg-white/15 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 border border-white/30 shadow-elegant hover-glow transition-all duration-300">
-                <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-white/98 leading-relaxed font-inter font-medium">
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-white leading-relaxed font-inter font-medium">
                   Metodologia de auditoria interna do 
                   <span className="block mt-1 sm:mt-2 text-white font-bold">
                     Instituto de Cooperação para o Desenvolvimento da Saúde (ICDS)
@@ -227,7 +227,7 @@ const Index = () => {
                 </p>
               </div>
               
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 leading-relaxed max-w-4xl mx-auto font-inter">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white leading-relaxed max-w-4xl mx-auto font-inter">
                 Realize auditorias estruturadas e gere relatórios profissionais para garantir a qualidade e conformidade das unidades hospitalares
               </p>
             </div>
