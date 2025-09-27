@@ -19,7 +19,7 @@ const StatsOverview = ({
 }: StatsOverviewProps) => {
   const stats = [
     {
-      title: "Total de Setores",
+      title: "Total de Módulos",
       value: totalSectors,
       icon: <FileText className="w-5 h-5" />,
       color: "text-primary"
@@ -62,7 +62,7 @@ const StatsOverview = ({
             </div>
             <Progress value={overallProgress} className="h-3" />
             <p className="text-sm text-muted-foreground">
-              {completedSectors} de {totalSectors} setores concluídos
+              {completedSectors} de {totalSectors} módulos concluídos
             </p>
           </div>
         </CardContent>
