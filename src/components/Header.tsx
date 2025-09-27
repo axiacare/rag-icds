@@ -35,13 +35,14 @@ const Header = () => {
           </div>
           
           <div className="flex items-center space-x-2 sm:space-x-4">
-            {/* AxiaCare Logo */}
+            {/* Powered by AxiaCare */}
             <a 
               href="https://axcare.com.br" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center bg-white/90 px-3 sm:px-4 py-2 rounded-full backdrop-blur-sm hover:bg-white/95 transition-all shadow-sm"
+              className="flex items-center space-x-2 bg-white/90 px-2 sm:px-3 py-1 rounded-full backdrop-blur-sm hover:bg-white/95 transition-all shadow-sm"
             >
+              <span className="text-gray-800 text-xs sm:text-sm font-medium">Powered by</span>
               <img 
                 src={axiacareLogo} 
                 alt="AxiaCare" 
