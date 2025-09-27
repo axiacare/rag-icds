@@ -10,6 +10,7 @@ import { Loader2, LogIn, UserPlus, Shield, Stethoscope } from 'lucide-react';
 import { z } from 'zod';
 import icdsMainLogo from "@/assets/icds-main-logo.png";
 import axiacareLogo from "@/assets/axiacare-logo.png";
+import Footer from "@/components/Footer";
 
 const authSchema = z.object({
   email: z.string().email('Email inválido'),
@@ -313,6 +314,7 @@ const Auth = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };
