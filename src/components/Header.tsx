@@ -3,8 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import icdsMainLogo from "@/assets/icds-main-logo.png";
 import axiacareLogo from "@/assets/axiacare-logo.png";
+import { useAdminCheck } from "@/hooks/useAdminCheck";
 
 const Header = () => {
+  const { isAdmin } = useAdminCheck();
+  
   return (
     <header className="bg-gradient-medical shadow-medical sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3">
@@ -62,16 +65,20 @@ const Header = () => {
                 <span className="hidden md:inline">Relatórios</span>
               </Button>
             </Link>
-            <Link to="/admin">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="bg-white/10 text-white border-white/30 hover:bg-white/20 backdrop-blur-sm"
-              >
-                <Settings className="w-4 h-4 sm:mr-2" />
-                <span className="hidden sm:inline">Admin</span>
-              </Button>
-            </Link>
+            
+            {/* Admin link - only visible to administrators */}
+            {isAdmin && (
+              <Link to="/admin">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="bg-white/10 text-white border-white/30 hover:bg-white/20 backdrop-blur-sm"
+                >
+                  <Settings className="w-4 h-4 sm:mr-2" />
+                  <span className="hidden sm:inline">Admin</span>
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
