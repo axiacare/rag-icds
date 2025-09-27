@@ -37,7 +37,7 @@ const Auth = () => {
   }, [user, navigate]);
 
   const handleQuickLogin = async () => {
-    setFormData({ email: 'admin@teste.com', password: 'admin', fullName: 'Administrador' });
+    setFormData({ email: 'admin@teste.com', password: 'admin123', fullName: 'Administrador' });
     
     // Try to login first, if fails, create the user
     setLoading(true);
@@ -45,12 +45,12 @@ const Auth = () => {
     
     try {
       // First try to login
-      let result = await signIn('admin@teste.com', 'admin');
+      let result = await signIn('admin@teste.com', 'admin123');
       
       if (result.error) {
         // If login fails, try to create the user
         console.log('Login failed, creating admin user...');
-        result = await signUp('admin@teste.com', 'admin', 'Administrador');
+        result = await signUp('admin@teste.com', 'admin123', 'Administrador');
         
         if (result.error) {
           if (result.error.message.includes('User already registered')) {
@@ -201,7 +201,7 @@ const Auth = () => {
                 
                 <CardContent className="space-y-6">
                   {/* Botão de teste */}
-                  {isLogin && (
+                   {isLogin && (
                     <div className="p-3 bg-accent/10 rounded-lg border border-accent/20">
                       <p className="text-xs text-muted-foreground mb-2 text-center">🧪 Acesso de teste:</p>
                       <Button
@@ -213,7 +213,7 @@ const Auth = () => {
                         disabled={loading}
                       >
                         <Shield className="w-3 h-3 mr-2" />
-                        {loading ? 'Processando...' : 'Criar/Entrar como Admin'}
+                        {loading ? 'Processando...' : 'Login Teste (admin@teste.com / admin123)'}
                       </Button>
                     </div>
                   )}
