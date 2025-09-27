@@ -6,6 +6,7 @@ import AuditForm from "@/components/AuditForm";
 import AuditReport from "@/components/AuditReport";
 import RecentAudits from "@/components/RecentAudits";
 import InstitutionForm from "@/components/InstitutionForm";
+import Footer from "@/components/Footer";
 import { hospitalSectors } from "@/data/realistic-sectors";
 import { AuditResult } from "@/types/audit";
 import { 
@@ -200,7 +201,7 @@ const Index = () => {
             {/* Main RAG Title with enhanced styling */}
             <div className="space-y-6">
               <div className="relative inline-block">
-                <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white leading-none tracking-tight">
+                <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-none tracking-tight">
                   RAG
                 </h1>
                 <div className="absolute -inset-4 bg-gradient-to-r from-medical-accent/20 to-medical-primary/20 rounded-3xl blur-2xl -z-10 animate-pulse"></div>
@@ -303,7 +304,7 @@ const Index = () => {
         {showInstitutionForm && selectedSectors.length > 0 && (
           <section className="px-4 sm:px-6">
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-6 sm:mb-8 text-foreground animate-fade-in">
-              Setores Hospitalares
+              Módulos Hospitalares
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {sectorsWithStatus.map((sector, index) => (
@@ -342,6 +343,7 @@ const Index = () => {
           </section>
         )}
       </div>
+      <Footer />
     </div>
   );
 };

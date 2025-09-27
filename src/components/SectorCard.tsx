@@ -51,25 +51,27 @@ const SectorCard = ({
   const progress = (completedRequirements / totalRequirements) * 100;
 
   return (
-    <Card className="shadow-card hover:shadow-medical transition-all duration-300 hover:scale-105 cursor-pointer group">
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="p-3 bg-gradient-medical rounded-lg text-white">
+    <Card className="shadow-card hover:shadow-medical transition-all duration-300 hover:scale-105 cursor-pointer group h-full flex flex-col">
+      <CardHeader className="pb-3 flex-1">
+        <div className="flex flex-col sm:flex-row items-start justify-between space-y-3 sm:space-y-0">
+          <div className="flex items-center space-x-3 flex-1 min-w-0">
+            <div className="p-2 sm:p-3 bg-gradient-medical rounded-lg text-white flex-shrink-0">
               {icon}
             </div>
-            <div>
-              <CardTitle className="text-lg font-semibold">{title}</CardTitle>
-              <p className="text-sm text-muted-foreground mt-1">{description}</p>
+            <div className="flex-1 min-w-0">
+              <CardTitle className="text-base sm:text-lg font-semibold line-clamp-2">{title}</CardTitle>
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1 line-clamp-3">{description}</p>
             </div>
           </div>
-          {getStatusBadge()}
+          <div className="w-full sm:w-auto flex sm:block justify-center">
+            {getStatusBadge()}
+          </div>
         </div>
       </CardHeader>
       
-      <CardContent>
+      <CardContent className="pt-0 mt-auto">
         <div className="space-y-3">
-          <div className="flex justify-between text-sm">
+          <div className="flex justify-between text-xs sm:text-sm">
             <span className="text-muted-foreground">Progresso</span>
             <span className="font-medium">{completedRequirements}/{totalRequirements} requisitos</span>
           </div>
@@ -84,10 +86,12 @@ const SectorCard = ({
           <Button 
             onClick={onStartAudit}
             variant="medical"
-            className="w-full group-hover:shadow-medical transition-all duration-300"
+            className="w-full group-hover:shadow-medical transition-all duration-300 text-sm sm:text-base py-2 sm:py-3"
           >
-            {status === "pending" ? "Iniciar Auditoria" : "Continuar Auditoria"}
-            <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            <span className="truncate">
+              {status === "pending" ? "Iniciar Auditoria" : "Continuar Auditoria"}
+            </span>
+            <ChevronRight className="w-4 h-4 ml-1 sm:ml-2 group-hover:translate-x-1 transition-transform flex-shrink-0" />
           </Button>
         </div>
       </CardContent>
