@@ -36,8 +36,38 @@ const Auth = () => {
     }
   }, [user, navigate]);
 
-  const handleQuickLogin = () => {
+  const handleQuickLogin = async () => {
     setFormData({ email: 'admin@teste.com', password: 'admin', fullName: 'Administrador' });
+    
+    // Try to login first, if fails, create the user
+    setLoading(true);
+    setError(null);
+    
+    try {
+      // First try to login
+      let result = await signIn('admin@teste.com', 'admin');
+      
+      if (result.error) {
+        // If login fails, try to create the user
+        console.log('Login failed, creating admin user...');
+        result = await signUp('admin@teste.com', 'admin', 'Administrador');
+        
+        if (result.error) {
+          if (result.error.message.includes('User already registered')) {
+            setError('Usuário admin já existe. Tente fazer login normalmente.');
+          } else {
+            setError(`Erro ao criar usuário admin: ${result.error.message}`);
+          }
+        } else {
+          setError('Usuário admin criado! Verifique o email admin@teste.com para confirmar a conta, ou use o email de confirmação que aparecerá.');
+        }
+      }
+    } catch (err) {
+      console.error('Error in quick login:', err);
+      setError('Erro ao processar login de teste.');
+    }
+    
+    setLoading(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -180,9 +210,10 @@ const Auth = () => {
                         size="sm"
                         onClick={handleQuickLogin}
                         className="w-full text-xs"
+                        disabled={loading}
                       >
                         <Shield className="w-3 h-3 mr-2" />
-                        Admin (admin@teste.com / admin)
+                        {loading ? 'Processando...' : 'Criar/Entrar como Admin'}
                       </Button>
                     </div>
                   )}
