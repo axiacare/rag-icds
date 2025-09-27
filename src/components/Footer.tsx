@@ -25,8 +25,7 @@ const Footer = () => {
           </p>
           
           <div className="text-xs text-muted-foreground text-center space-y-1">
-            <p>axcare.com.br | Copyright © 2025 AxiaCare</p>
-            <p>Todos os direitos reservados | Uma empresa do Grupo CSV</p>
+            <p>axcare.com.br | Copyright © 2025 AxiaCare | Todos os direitos reservados | Uma empresa do Grupo CSV</p>
           </div>
         </div>
       </div>

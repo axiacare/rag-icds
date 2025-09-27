@@ -183,12 +183,9 @@ const Auth = () => {
                 </CardHeader>
                 
                 <CardContent className="space-y-6">
-                  {/* Botão de Login de Teste - SEPARADO */}
+                  {/* Botão de Acesso Admin - SEPARADO e ACIMA */}
                    {isLogin && (
                     <div className="p-4 bg-muted/50 rounded-lg border border-border/50">
-                      <p className="text-sm text-muted-foreground mb-3 text-center font-medium">
-                        Acesso de Teste do Sistema
-                      </p>
                       <Button
                         type="button"
                         variant="secondary"
@@ -198,11 +195,8 @@ const Auth = () => {
                         disabled={loading}
                       >
                         <Shield className="w-4 h-4 mr-2" />
-                        {loading ? 'Entrando...' : 'Entrar com Login de Teste'}
+                        {loading ? 'Entrando...' : 'Acesso de Teste'}
                       </Button>
-                      <p className="text-xs text-muted-foreground mt-2 text-center">
-                        admin@teste.com / admin123
-                      </p>
                     </div>
                   )}
 
@@ -212,7 +206,7 @@ const Auth = () => {
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
                       <span className="bg-card px-2 text-muted-foreground">
-                        OU USE SEU LOGIN OFICIAL
+                        FAÇA SEU LOGIN
                       </span>
                     </div>
                   </div>
@@ -278,7 +272,7 @@ const Auth = () => {
                           {isLogin ? (
                             <>
                               <LogIn className="w-4 h-4 mr-2" />
-                              Entrar no RAG
+                              Acessar RAG
                             </>
                           ) : (
                             <>
