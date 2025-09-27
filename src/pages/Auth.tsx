@@ -122,8 +122,8 @@ const Auth = () => {
             <div className="flex items-center justify-center space-x-6 animate-fade-in">
               <div className="bg-white rounded-lg p-2 sm:p-3 shadow-lg">
                 <img 
-                  src={logoGuilherme} 
-                  alt="Logo Guilherme" 
+                  src={icdsMainLogo} 
+                  alt="ICDS Logo" 
                   className="h-8 sm:h-10 md:h-12 w-auto"
                   loading="eager"
                 />
@@ -169,8 +169,12 @@ const Auth = () => {
             <div className="w-full max-w-md animate-scale-in" style={{ animationDelay: '0.6s' }}>
               <Card className="shadow-elegant border-0 bg-gradient-to-br from-card/95 via-card to-background/95 backdrop-blur-sm">
                 <CardHeader className="space-y-4 text-center">
-                  <div className="mx-auto p-3 bg-gradient-medical rounded-2xl w-14 h-14 flex items-center justify-center shadow-glow animate-float">
-                    <Stethoscope className="w-7 h-7 text-white" />
+                  <div className="mx-auto p-3 bg-white rounded-2xl w-14 h-14 flex items-center justify-center shadow-glow animate-float">
+                    <img 
+                      src={logoGuilherme} 
+                      alt="Logo Guilherme" 
+                      className="w-8 h-8 object-contain"
+                    />
                   </div>
                   <div className="space-y-2">
                     <CardTitle className="text-xl font-bold text-foreground font-inter">
