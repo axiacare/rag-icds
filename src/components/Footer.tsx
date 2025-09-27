@@ -20,19 +20,13 @@ const Footer = () => {
             />
           </a>
           
-          <div className="space-y-2">
-            <p className="text-sm sm:text-base font-medium text-foreground">
-              AxView™ | WebApps – Gestão e Consultoria em Saúde
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm text-muted-foreground space-y-1 sm:space-y-0 sm:space-x-2">
-              <span>axcare.com.br</span>
-              <span className="hidden sm:inline">|</span>
-              <span>Copyright © 2025 AxiaCare</span>
-              <span className="hidden sm:inline">|</span>
-              <span>Todos os direitos reservados</span>
-              <span className="hidden sm:inline">|</span>
-              <span>Uma empresa do Grupo CSV</span>
-            </div>
+          <p className="text-sm font-medium text-foreground">
+            AxView™ | WebApps – Gestão e Consultoria em Saúde
+          </p>
+          
+          <div className="text-xs text-muted-foreground text-center space-y-1">
+            <p>axcare.com.br | Copyright © 2025 AxiaCare</p>
+            <p>Todos os direitos reservados | Uma empresa do Grupo CSV</p>
           </div>
         </div>
       </div>
