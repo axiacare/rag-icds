@@ -44,32 +44,10 @@ export const useAuth = () => {
         // Se não há sessão persistente, verificar se há temporária
         checkTemporarySession();
       } else {
-        // Verificar se a sessão deve ser mantida
-        const isTestSession = sessionStorage.getItem('isTestSession');
-        const manterConectado = sessionStorage.getItem('manterConectado');
-        
-        // Se é sessão de teste, sempre fazer logout
-        if (isTestSession) {
-          supabase.auth.signOut();
-          sessionStorage.removeItem('tempSession');
-          sessionStorage.removeItem('isTestSession');
-          sessionStorage.removeItem('manterConectado');
-          setSession(null);
-          setUser(null);
-        } 
-        // Se não é sessão de teste mas não tem permissão para manter conectado, fazer logout
-        else if (!manterConectado) {
-          supabase.auth.signOut();
-          sessionStorage.removeItem('tempSession');
-          sessionStorage.removeItem('manterConectado');
-          setSession(null);
-          setUser(null);
-        }
-        // Caso contrário, manter a sessão
-        else {
-          setSession(session);
-          setUser(session?.user ?? null);
-        }
+        // Para sessões existentes, apenas definir estado sem fazer logout automático
+        // O logout automático será tratado apenas no onAuthStateChange
+        setSession(session);
+        setUser(session?.user ?? null);
       }
       setLoading(false);
     });
@@ -77,8 +55,13 @@ export const useAuth = () => {
     // Verificar logout automático para sessões de teste quando a página é recarregada
     const handleBeforeUnload = () => {
       const isTestSession = sessionStorage.getItem('isTestSession');
+      const manterConectado = sessionStorage.getItem('manterConectado');
+      
       if (isTestSession) {
         // Para sessões de teste, fazer logout automático
+        supabase.auth.signOut();
+      } else if (manterConectado === 'false') {
+        // Para usuários que não marcaram "manter conectado", fazer logout
         supabase.auth.signOut();
       }
     };
