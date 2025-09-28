@@ -112,6 +112,27 @@ export const useAuth = () => {
       email,
       password,
     });
+
+    // Verificar se a conta foi aprovada após o login
+    if (!error) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('account_status')
+        .eq('user_id', (await supabase.auth.getUser()).data.user?.id)
+        .single();
+
+      if (profile?.account_status !== 'approved') {
+        await supabase.auth.signOut();
+        return { 
+          error: { 
+            message: profile?.account_status === 'pending' 
+              ? 'Sua conta está pendente de aprovação. Entre em contato com o administrador.' 
+              : 'Sua conta foi rejeitada. Entre em contato com o administrador.'
+          }
+        };
+      }
+    }
+
     return { error };
   };
 

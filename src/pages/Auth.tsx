@@ -108,7 +108,7 @@ const Auth = () => {
           setError(result.error.message);
         }
       } else if (!isLogin) {
-        setError('Cadastro realizado! Verifique seu email para confirmar sua conta.');
+        setError('Cadastro realizado! Sua conta está pendente de aprovação do administrador. Você receberá uma notificação quando for aprovada.');
       }
     } catch (err) {
       if (err instanceof z.ZodError) {
