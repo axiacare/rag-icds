@@ -6,8 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Loader2, LogIn, UserPlus, Shield, Stethoscope } from 'lucide-react';
 import { z } from 'zod';
+import { supabase } from '@/integrations/supabase/client';
 import icdsMainLogo from "@/assets/icds-main-logo.png";
 import axiacareLogo from "@/assets/axiacare-logo.png";
 import logoGuilherme from "@/assets/logo-guilherme.png";
@@ -30,6 +32,7 @@ const Auth = () => {
     password: '',
     fullName: '',
   });
+  const [keepLoggedIn, setKeepLoggedIn] = useState(false);
 
   // Redirect if already logged in
   useEffect(() => {
@@ -46,6 +49,15 @@ const Auth = () => {
       const result = await signIn('admin@teste.com', 'admin123');
       if (result.error) {
         setError('Usuário de teste não encontrado ou credenciais incorretas.');
+      } else {
+        // Marcar como sessão temporária para logout automático
+        sessionStorage.setItem('isTestSession', 'true');
+        // Remover do localStorage para forçar logout ao fechar navegador
+        const session = await supabase.auth.getSession();
+        if (session.data.session) {
+          sessionStorage.setItem('tempSession', JSON.stringify(session.data.session));
+          localStorage.removeItem('sb-lrhfwqadnmlujenewzif-auth-token');
+        }
       }
     } catch (err) {
       console.error('Error in test login:', err);
@@ -71,6 +83,16 @@ const Auth = () => {
       let result;
       if (isLogin) {
         result = await signIn(formData.email, formData.password);
+        
+        // Se login bem-sucedido e não marcou "manter conectado"
+        if (!result.error && !keepLoggedIn) {
+          // Mover sessão para sessionStorage apenas
+          const session = await supabase.auth.getSession();
+          if (session.data.session) {
+            sessionStorage.setItem('tempSession', JSON.stringify(session.data.session));
+            localStorage.removeItem('sb-lrhfwqadnmlujenewzif-auth-token');
+          }
+        }
       } else {
         result = await signUp(formData.email, formData.password, formData.fullName);
       }
@@ -267,6 +289,22 @@ const Auth = () => {
                       <Alert variant="destructive">
                         <AlertDescription>{error}</AlertDescription>
                       </Alert>
+                    )}
+
+                    {isLogin && (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="keepLoggedIn"
+                          checked={keepLoggedIn}
+                          onCheckedChange={(checked) => setKeepLoggedIn(checked as boolean)}
+                        />
+                        <Label 
+                          htmlFor="keepLoggedIn" 
+                          className="text-sm text-muted-foreground cursor-pointer"
+                        >
+                          Manter conta conectada
+                        </Label>
+                      </div>
                     )}
 
                     <Button

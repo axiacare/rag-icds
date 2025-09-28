@@ -8,9 +8,29 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Verificar se há sessão temporária no sessionStorage
+    const checkTemporarySession = () => {
+      const tempSession = sessionStorage.getItem('tempSession');
+      if (tempSession) {
+        try {
+          const parsedSession = JSON.parse(tempSession);
+          setSession(parsedSession);
+          setUser(parsedSession.user);
+        } catch (error) {
+          sessionStorage.removeItem('tempSession');
+        }
+      }
+    };
+
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        if (event === 'SIGNED_OUT') {
+          // Limpar todas as sessões temporárias
+          sessionStorage.removeItem('tempSession');
+          sessionStorage.removeItem('isTestSession');
+        }
+        
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
@@ -19,12 +39,31 @@ export const useAuth = () => {
 
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+      if (!session) {
+        // Se não há sessão persistente, verificar se há temporária
+        checkTemporarySession();
+      } else {
+        setSession(session);
+        setUser(session?.user ?? null);
+      }
       setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    // Verificar logout automático para sessões de teste quando a página é recarregada
+    const handleBeforeUnload = () => {
+      const isTestSession = sessionStorage.getItem('isTestSession');
+      if (isTestSession) {
+        // Para sessões de teste, fazer logout automático
+        supabase.auth.signOut();
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      subscription.unsubscribe();
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
   }, []);
 
   const signUp = async (email: string, password: string, fullName?: string) => {
@@ -52,6 +91,10 @@ export const useAuth = () => {
   };
 
   const signOut = async () => {
+    // Limpar sessões temporárias
+    sessionStorage.removeItem('tempSession');
+    sessionStorage.removeItem('isTestSession');
+    
     const { error } = await supabase.auth.signOut();
     return { error };
   };
