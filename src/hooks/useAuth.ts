@@ -44,20 +44,41 @@ export const useAuth = () => {
         // Se não há sessão persistente, verificar se há temporária
         checkTemporarySession();
       } else {
-        // Para sessões existentes, apenas definir estado sem fazer logout automático
-        // O logout automático será tratado apenas no onAuthStateChange
-        setSession(session);
-        setUser(session?.user ?? null);
+        // Verificar se a sessão deve ser mantida
+        const isTestSession = sessionStorage.getItem('isTestSession');
+        const manterConectado = sessionStorage.getItem('manterConectado');
+        
+        // Se é sessão de teste, sempre fazer logout
+        if (isTestSession) {
+          supabase.auth.signOut();
+          sessionStorage.removeItem('tempSession');
+          sessionStorage.removeItem('isTestSession');
+          sessionStorage.removeItem('manterConectado');
+          setSession(null);
+          setUser(null);
+        } 
+        // Se não é sessão de teste mas não tem permissão para manter conectado, fazer logout
+        else if (!manterConectado) {
+          supabase.auth.signOut();
+          sessionStorage.removeItem('tempSession');
+          sessionStorage.removeItem('manterConectado');
+          setSession(null);
+          setUser(null);
+        }
+        // Caso contrário, manter a sessão
+        else {
+          setSession(session);
+          setUser(session?.user ?? null);
+        }
       }
       setLoading(false);
     });
 
-    // Verificar logout automático apenas quando a janela é realmente fechada (não durante navegação)
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      const manterConectado = sessionStorage.getItem('manterConectado');
-      
-      // Só fazer logout se o usuário não marcou "manter conectado" e está realmente fechando a janela
-      if (manterConectado === 'false') {
+    // Verificar logout automático para sessões de teste quando a página é recarregada
+    const handleBeforeUnload = () => {
+      const isTestSession = sessionStorage.getItem('isTestSession');
+      if (isTestSession) {
+        // Para sessões de teste, fazer logout automático
         supabase.auth.signOut();
       }
     };
@@ -91,27 +112,6 @@ export const useAuth = () => {
       email,
       password,
     });
-
-    // Verificar se a conta foi aprovada após o login
-    if (!error) {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('account_status')
-        .eq('user_id', (await supabase.auth.getUser()).data.user?.id)
-        .single();
-
-      if (profile?.account_status !== 'approved') {
-        await supabase.auth.signOut();
-        return { 
-          error: { 
-            message: profile?.account_status === 'pending' 
-              ? 'Sua conta está pendente de aprovação. Entre em contato com o administrador.' 
-              : 'Sua conta foi rejeitada. Entre em contato com o administrador.'
-          }
-        };
-      }
-    }
-
     return { error };
   };
 

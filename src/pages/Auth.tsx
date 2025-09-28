@@ -50,9 +50,14 @@ const Auth = () => {
       if (result.error) {
         setError('Usuário de teste não encontrado ou credenciais incorretas.');
       } else {
-        // Marcar como sessão de teste para logout ao fechar navegador
+        // Marcar como sessão temporária para logout automático
         sessionStorage.setItem('isTestSession', 'true');
-        // Não manipular localStorage aqui, deixar o Supabase gerenciar
+        // Remover do localStorage para forçar logout ao fechar navegador
+        const session = await supabase.auth.getSession();
+        if (session.data.session) {
+          sessionStorage.setItem('tempSession', JSON.stringify(session.data.session));
+          localStorage.removeItem('sb-lrhfwqadnmlujenewzif-auth-token');
+        }
       }
     } catch (err) {
       console.error('Error in test login:', err);
@@ -81,11 +86,12 @@ const Auth = () => {
         
         // Se login bem-sucedido e não marcou "manter conectado"
         if (!result.error && !keepLoggedIn) {
-          // Marcar que não deve manter sessão persistente
-          sessionStorage.setItem('manterConectado', 'false');
-        } else if (!result.error && keepLoggedIn) {
-          // Marcar que deve manter sessão persistente
-          sessionStorage.setItem('manterConectado', 'true');
+          // Mover sessão para sessionStorage apenas
+          const session = await supabase.auth.getSession();
+          if (session.data.session) {
+            sessionStorage.setItem('tempSession', JSON.stringify(session.data.session));
+            localStorage.removeItem('sb-lrhfwqadnmlujenewzif-auth-token');
+          }
         }
       } else {
         result = await signUp(formData.email, formData.password, formData.fullName);
@@ -102,7 +108,7 @@ const Auth = () => {
           setError(result.error.message);
         }
       } else if (!isLogin) {
-        setError('Cadastro realizado! Sua conta está pendente de aprovação do administrador. Você receberá uma notificação quando for aprovada.');
+        setError('Cadastro realizado! Verifique seu email para confirmar sua conta.');
       }
     } catch (err) {
       if (err instanceof z.ZodError) {
@@ -143,6 +149,7 @@ const Auth = () => {
                   className="h-8 sm:h-10 md:h-12 w-auto"
                   loading="eager"
                   decoding="async"
+                  fetchPriority="high"
                 />
               </div>
               
@@ -160,6 +167,7 @@ const Auth = () => {
                   className="h-6 sm:h-8 md:h-10 object-contain"
                   loading="eager"
                   decoding="async"
+                  fetchPriority="high"
                 />
               </div>
             </div>
@@ -194,6 +202,7 @@ const Auth = () => {
                       className="w-8 h-8 object-contain"
                       loading="eager"
                       decoding="async"
+                      fetchPriority="high"
                     />
                   </div>
                   <div className="space-y-2">

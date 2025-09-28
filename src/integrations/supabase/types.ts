@@ -217,44 +217,32 @@ export type Database = {
       }
       profiles: {
         Row: {
-          account_status: Database["public"]["Enums"]["account_status_enum"]
-          approved_at: string | null
-          approved_by: string | null
           created_at: string
           email: string
           full_name: string
           id: string
           institution_id: string | null
           phone: string | null
-          rejection_reason: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
-          account_status?: Database["public"]["Enums"]["account_status_enum"]
-          approved_at?: string | null
-          approved_by?: string | null
           created_at?: string
           email: string
           full_name: string
           id?: string
           institution_id?: string | null
           phone?: string | null
-          rejection_reason?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
-          account_status?: Database["public"]["Enums"]["account_status_enum"]
-          approved_at?: string | null
-          approved_by?: string | null
           created_at?: string
           email?: string
           full_name?: string
           id?: string
           institution_id?: string | null
           phone?: string | null
-          rejection_reason?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -374,10 +362,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      approve_user_account: {
-        Args: { _user_id: string }
-        Returns: boolean
-      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -385,13 +369,8 @@ export type Database = {
         }
         Returns: boolean
       }
-      reject_user_account: {
-        Args: { _reason?: string; _user_id: string }
-        Returns: boolean
-      }
     }
     Enums: {
-      account_status_enum: "pending" | "approved" | "rejected"
       app_role: "admin" | "auditor" | "viewer"
     }
     CompositeTypes: {
@@ -520,7 +499,6 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      account_status_enum: ["pending", "approved", "rejected"],
       app_role: ["admin", "auditor", "viewer"],
     },
   },
