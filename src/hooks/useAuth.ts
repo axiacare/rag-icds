@@ -29,6 +29,7 @@ export const useAuth = () => {
           // Limpar todas as sessões temporárias
           sessionStorage.removeItem('tempSession');
           sessionStorage.removeItem('isTestSession');
+          sessionStorage.removeItem('manterConectado');
         }
         
         setSession(session);
@@ -43,8 +44,32 @@ export const useAuth = () => {
         // Se não há sessão persistente, verificar se há temporária
         checkTemporarySession();
       } else {
-        setSession(session);
-        setUser(session?.user ?? null);
+        // Verificar se a sessão deve ser mantida
+        const isTestSession = sessionStorage.getItem('isTestSession');
+        const manterConectado = sessionStorage.getItem('manterConectado');
+        
+        // Se é sessão de teste, sempre fazer logout
+        if (isTestSession) {
+          supabase.auth.signOut();
+          sessionStorage.removeItem('tempSession');
+          sessionStorage.removeItem('isTestSession');
+          sessionStorage.removeItem('manterConectado');
+          setSession(null);
+          setUser(null);
+        } 
+        // Se não é sessão de teste mas não tem permissão para manter conectado, fazer logout
+        else if (!manterConectado) {
+          supabase.auth.signOut();
+          sessionStorage.removeItem('tempSession');
+          sessionStorage.removeItem('manterConectado');
+          setSession(null);
+          setUser(null);
+        }
+        // Caso contrário, manter a sessão
+        else {
+          setSession(session);
+          setUser(session?.user ?? null);
+        }
       }
       setLoading(false);
     });
@@ -94,6 +119,7 @@ export const useAuth = () => {
     // Limpar sessões temporárias
     sessionStorage.removeItem('tempSession');
     sessionStorage.removeItem('isTestSession');
+    sessionStorage.removeItem('manterConectado');
     
     const { error } = await supabase.auth.signOut();
     return { error };
