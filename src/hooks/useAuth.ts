@@ -94,7 +94,7 @@ export const useAuth = () => {
   const signUp = async (email: string, password: string, fullName?: string) => {
     const redirectUrl = `${window.location.origin}/`;
     
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -104,6 +104,23 @@ export const useAuth = () => {
         }
       }
     });
+
+    // Se o usuário foi criado com sucesso, criar perfil com status pending
+    if (data.user && !error) {
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .insert({
+          user_id: data.user.id,
+          full_name: fullName || email,
+          email: email,
+          account_status: 'pending'
+        });
+      
+      if (profileError) {
+        console.error('Erro ao criar perfil:', profileError);
+      }
+    }
+    
     return { error };
   };
 

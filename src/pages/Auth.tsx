@@ -108,7 +108,7 @@ const Auth = () => {
           setError(result.error.message);
         }
       } else if (!isLogin) {
-        setError('Cadastro realizado! Verifique seu email para confirmar sua conta.');
+        setError('Cadastro realizado! Sua conta foi enviada para aprovação. Aguarde o contato da administração.');
       }
     } catch (err) {
       if (err instanceof z.ZodError) {

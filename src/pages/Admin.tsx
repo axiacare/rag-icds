@@ -5,10 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit2, Trash2, Save, ArrowLeft, Settings } from "lucide-react";
+import { Plus, Edit2, Trash2, Save, ArrowLeft, Settings, UserCheck } from "lucide-react";
 import { hospitalSectors } from "@/data/realistic-sectors";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
+import AdminApprovals from "./AdminApprovals";
 
 interface Question {
   id: number;
@@ -27,12 +28,13 @@ interface EditingSector {
 }
 
 const Admin = () => {
-  const [activeTab, setActiveTab] = useState<'sectors' | 'questions' | 'settings'>('sectors');
+  const [activeTab, setActiveTab] = useState<'approvals' | 'sectors' | 'questions' | 'settings'>('approvals');
   const [editingSector, setEditingSector] = useState<EditingSector | null>(null);
   const [editingQuestion, setEditingQuestion] = useState<Question | null>(null);
   const [isAddingQuestion, setIsAddingQuestion] = useState(false);
 
   const tabs = [
+    { id: 'approvals', label: 'Aprovações', icon: UserCheck },
     { id: 'sectors', label: 'Setores', icon: Settings },
     { id: 'questions', label: 'Requisitos', icon: Edit2 },
     { id: 'settings', label: 'Configurações', icon: Settings },
@@ -130,6 +132,11 @@ const Admin = () => {
             </button>
           ))}
         </div>
+
+        {/* Approvals Tab */}
+        {activeTab === 'approvals' && (
+          <AdminApprovals />
+        )}
 
         {/* Sectors Tab */}
         {activeTab === 'sectors' && (
