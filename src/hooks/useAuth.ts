@@ -52,16 +52,12 @@ export const useAuth = () => {
       setLoading(false);
     });
 
-    // Verificar logout automático para sessões de teste quando a página é recarregada
-    const handleBeforeUnload = () => {
-      const isTestSession = sessionStorage.getItem('isTestSession');
+    // Verificar logout automático apenas quando a janela é realmente fechada (não durante navegação)
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       const manterConectado = sessionStorage.getItem('manterConectado');
       
-      if (isTestSession) {
-        // Para sessões de teste, fazer logout automático
-        supabase.auth.signOut();
-      } else if (manterConectado === 'false') {
-        // Para usuários que não marcaram "manter conectado", fazer logout
+      // Só fazer logout se o usuário não marcou "manter conectado" e está realmente fechando a janela
+      if (manterConectado === 'false') {
         supabase.auth.signOut();
       }
     };
