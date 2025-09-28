@@ -154,6 +154,8 @@ const Index = () => {
 
   const handleWizardCancel = () => {
     setShowWizard(false);
+  };
+
   const handleBackToDashboard = () => {
     setAppState('dashboard');
     setCurrentSector(null);
