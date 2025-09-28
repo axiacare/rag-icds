@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit2, Trash2, Save, ArrowLeft, Settings, UserCheck } from "lucide-react";
+import { Plus, Edit2, Trash2, Save, ArrowLeft, Settings, UserCheck, Users, Building2 } from "lucide-react";
 import { hospitalSectors } from "@/data/realistic-sectors";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
@@ -28,14 +28,16 @@ interface EditingSector {
 }
 
 const Admin = () => {
-  const [activeTab, setActiveTab] = useState<'approvals' | 'sectors' | 'questions' | 'settings'>('approvals');
+  const [activeTab, setActiveTab] = useState<'approvals' | 'sectors' | 'questions' | 'users' | 'institutions' | 'settings'>('approvals');
   const [editingSector, setEditingSector] = useState<EditingSector | null>(null);
   const [editingQuestion, setEditingQuestion] = useState<Question | null>(null);
   const [isAddingQuestion, setIsAddingQuestion] = useState(false);
 
   const tabs = [
     { id: 'approvals', label: 'Aprovações', icon: UserCheck },
-    { id: 'sectors', label: 'Setores', icon: Settings },
+    { id: 'users', label: 'Usuários', icon: Users },
+    { id: 'institutions', label: 'Unidades', icon: Building2 },
+    { id: 'sectors', label: 'Módulos', icon: Settings },
     { id: 'questions', label: 'Requisitos', icon: Edit2 },
     { id: 'settings', label: 'Configurações', icon: Settings },
   ];
@@ -104,7 +106,7 @@ const Admin = () => {
               Painel Administrativo
             </h1>
             <p className="text-muted-foreground">
-              Configure setores, requisitos e parâmetros do sistema
+              Configure usuários, unidades, módulos e parâmetros do sistema
             </p>
           </div>
           <Link to="/">
@@ -138,41 +140,126 @@ const Admin = () => {
           <AdminApprovals />
         )}
 
+        {/* Users Tab */}
+        {activeTab === 'users' && (
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <h2 className="text-xl font-semibold text-foreground">
+                  Gerenciar Usuários
+                </h2>
+                <p className="text-muted-foreground mt-1">
+                  Administre auditores e suas permissões
+                </p>
+              </div>
+              <Button className="w-full sm:w-auto">
+                <Plus className="w-4 h-4 mr-2" />
+                Novo Usuário
+              </Button>
+            </div>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="text-center py-8">
+                  <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-foreground mb-2">
+                    Gerenciamento de Usuários
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Esta funcionalidade será implementada para gerenciar auditores e permissões
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Institutions Tab */}
+        {activeTab === 'institutions' && (
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <h2 className="text-xl font-semibold text-foreground">
+                  Gerenciar Unidades
+                </h2>
+                <p className="text-muted-foreground mt-1">
+                  Configure unidades hospitalares e suas informações
+                </p>
+              </div>
+              <Button className="w-full sm:w-auto">
+                <Plus className="w-4 h-4 mr-2" />
+                Nova Unidade
+              </Button>
+            </div>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="text-center py-8">
+                  <Building2 className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-foreground mb-2">
+                    Gerenciamento de Unidades
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Esta funcionalidade será implementada para gerenciar unidades hospitalares
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
         {/* Sectors Tab */}
         {activeTab === 'sectors' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {hospitalSectors.map((sector) => (
-              <Card key={sector.id} className="hover:shadow-md transition-shadow">
-                <CardHeader className="pb-3">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1 min-w-0">
-                      <CardTitle className="text-lg truncate">{sector.name}</CardTitle>
-                      <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
-                        {sector.description}
-                      </p>
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <h2 className="text-xl font-semibold text-foreground">
+                  Módulos de Auditoria
+                </h2>
+                <p className="text-muted-foreground mt-1">
+                  Configure os módulos disponíveis para auditoria
+                </p>
+              </div>
+              <Button className="w-full sm:w-auto">
+                <Plus className="w-4 h-4 mr-2" />
+                Novo Módulo
+              </Button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {hospitalSectors.map((sector) => (
+                <Card key={sector.id} className="hover:shadow-md transition-shadow">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1 min-w-0">
+                        <CardTitle className="text-lg truncate">{sector.name}</CardTitle>
+                        <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                          {sector.description}
+                        </p>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleEditSector(sector)}
+                        className="ml-2 flex-shrink-0"
+                      >
+                        <Edit2 className="w-4 h-4" />
+                      </Button>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleEditSector(sector)}
-                      className="ml-2 flex-shrink-0"
-                    >
-                      <Edit2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">
-                      {sector.questions.length} requisitos
-                    </span>
-                    <Badge variant="secondary" className="text-xs">
-                      Ativo
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">
+                        {sector.questions.length} requisitos
+                      </span>
+                      <Badge variant="secondary" className="text-xs">
+                        Ativo
+                      </Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         )}
 

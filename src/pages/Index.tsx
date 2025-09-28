@@ -23,7 +23,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import heroImage from "@/assets/rag-hero.jpg";
+import AuditWizard from "@/components/AuditWizard";
 
 type AppState = 'dashboard' | 'audit' | 'report';
 
@@ -51,6 +51,7 @@ const Index = () => {
     selectedSectors: hospitalSectors.map(sector => sector.id),
   });
   const [showInstitutionForm, setShowInstitutionForm] = useState(false);
+  const [showWizard, setShowWizard] = useState(false);
 
   const sectorIcons = [
     <Shield className="w-6 h-6" />,      // Segurança do Paciente
@@ -136,6 +137,23 @@ const Index = () => {
     setAppState('report');
   };
 
+  const handleWizardComplete = (data: any) => {
+    console.log('Wizard completed with data:', data);
+    setShowWizard(false);
+    setShowInstitutionForm(true);
+    // Here you could set the institution data and selected sectors from the wizard
+    setInstitutionData({
+      name: data.institution.name,
+      registrationNumber: data.institution.cnpj,
+      auditDate: data.audit.startDate,
+      auditors: data.audit.auditors,
+      selectedSectors: data.selectedSectors,
+    });
+    setSelectedSectors(data.selectedSectors);
+  };
+
+  const handleWizardCancel = () => {
+    setShowWizard(false);
   const handleBackToDashboard = () => {
     setAppState('dashboard');
     setCurrentSector(null);
@@ -151,6 +169,16 @@ const Index = () => {
   const totalRequirements = sectorsWithStatus.reduce((acc, s) => acc + s.totalRequirements, 0);
   const completedRequirements = sectorsWithStatus.reduce((acc, s) => acc + s.completedRequirements, 0);
   const overallProgress = (completedRequirements / totalRequirements) * 100;
+
+  // Show wizard if requested
+  if (showWizard) {
+    return (
+      <AuditWizard
+        onComplete={handleWizardComplete}
+        onCancel={handleWizardCancel}
+      />
+    );
+  }
 
   // Render based on app state
   if (appState === 'audit' && currentSector) {
@@ -267,7 +295,7 @@ const Index = () => {
                   </div>
                   <div className="animate-fade-in" style={{ animationDelay: '0.6s' }}>
                     <Button
-                      onClick={() => setShowInstitutionForm(true)}
+                      onClick={() => setShowWizard(true)}
                       variant="medical"
                       size="lg"
                       className="text-sm sm:text-base lg:text-lg px-6 sm:px-8 lg:px-12 py-3 sm:py-4 lg:py-6 h-10 sm:h-12 lg:h-14 shadow-glow hover:shadow-elegant transform hover:scale-105 transition-all duration-300 w-full sm:w-auto font-inter font-medium touch-target"

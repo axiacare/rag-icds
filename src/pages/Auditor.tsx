@@ -83,10 +83,10 @@ const Reports = () => {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-              Relatórios de Auditoria
+              Central do Auditor
             </h1>
             <p className="text-muted-foreground">
-              Visualize e gerencie os relatórios de auditoria realizadas
+              Acesse todas as ferramentas e relatórios de auditoria em um só lugar
             </p>
           </div>
           <Link to="/">

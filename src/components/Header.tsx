@@ -44,14 +44,14 @@ const Header = () => {
               href="https://axcare.com.br" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="hidden sm:flex items-center gap-2 bg-white/95 hover:bg-white px-4 py-2 rounded-full backdrop-blur-sm transition-all duration-300 shadow-lg hover:shadow-xl border border-white/20"
+              className="hidden sm:flex items-center gap-3 bg-white/95 hover:bg-white px-6 py-3 rounded-full backdrop-blur-sm transition-all duration-300 shadow-lg hover:shadow-xl border border-white/20 hover:scale-105 transform"
             >
-              <span className="text-gray-700 text-sm font-semibold tracking-wide">Powered by</span>
+              <span className="text-gray-700 text-base font-bold tracking-wide">Powered by</span>
               <div className="flex items-center">
                 <img 
                   src={axiacareLogo} 
                   alt="AxiaCare" 
-                  className="h-5 w-auto object-contain"
+                  className="h-6 w-auto object-contain"
                   loading="eager"
                   decoding="async"
                   fetchPriority="high"
@@ -59,14 +59,14 @@ const Header = () => {
               </div>
             </a>
             
-            <Link to="/reports">
+            <Link to="/auditor">
               <Button 
                 variant="outline" 
                 size="sm" 
                 className="bg-white/10 text-white border-white/30 hover:bg-white/20 backdrop-blur-sm hidden sm:flex"
               >
                 <FileText className="w-4 h-4 mr-2" />
-                <span className="hidden md:inline">Relatórios</span>
+                <span className="hidden md:inline">Auditor</span>
               </Button>
             </Link>
             

@@ -1,6 +1,12 @@
 import axiacareImage from "@/assets/axiacare-logo.png";
+import { Settings } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { useAdminCheck } from "@/hooks/useAdminCheck";
 
 const Footer = () => {
+  const { isAdmin } = useAdminCheck();
+  
   return (
     <footer className="bg-background border-t border-border py-8 mt-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -28,6 +34,22 @@ const Footer = () => {
           <div className="text-xs text-muted-foreground text-center space-y-1">
             <p>axcare.com.br | Copyright © 2025 AxiaCare | Todos os direitos reservados | Uma empresa do Grupo CSV</p>
           </div>
+          
+          {/* Admin access button - discrete and aligned with design */}
+          {isAdmin && (
+            <div className="pt-4">
+              <Link to="/admin">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <Settings className="w-3 h-3 mr-1" />
+                  <span className="text-xs">Admin</span>
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </footer>

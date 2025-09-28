@@ -11,7 +11,7 @@ import PageTransition from "@/components/PageTransition";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
-import Reports from "./pages/Reports";
+import Reports from "./pages/Auditor";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,7 +44,7 @@ const App = () => (
                 </PageTransition>
               </AdminRoute>
             } />
-            <Route path="/reports" element={
+            <Route path="/auditor" element={
               <ProtectedRoute>
                 <PageTransition>
                   <Reports />
