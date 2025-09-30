@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,82 +14,158 @@ import {
   ArrowLeft, 
   Calendar as CalendarIcon, 
   Building2, 
-  Users, 
   Settings, 
   CheckCircle,
-  X
+  FileText,
+  Loader2
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { hospitalSectors } from "@/data/realistic-sectors";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
-type WizardStep = 'institution' | 'audit' | 'customize' | 'overview';
+type WizardStep = 'institution' | 'template' | 'sectors' | 'overview';
 
-interface InstitutionData {
+interface Institution {
+  id: string;
   name: string;
-  cnpj: string;
-  address: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  email: string;
-  phone: string;
+  cnpj: string | null;
+  city: string | null;
+  state: string | null;
 }
 
-interface AuditData {
-  startDate: Date | undefined;
-  endDate: Date | undefined;
-  auditors: string[];
-  title: string;
-  description: string;
+interface Template {
+  id: string;
+  name: string;
+  description: string | null;
+  version: string;
+}
+
+interface Sector {
+  id: string;
+  name: string;
+  description: string | null;
+  template_id: string;
+  order_index: number;
 }
 
 interface AuditWizardProps {
-  onComplete: (data: { institution: InstitutionData; audit: AuditData; selectedSectors: number[] }) => void;
+  onComplete: () => void;
   onCancel: () => void;
 }
 
 const AuditWizard = ({ onComplete, onCancel }: AuditWizardProps) => {
   const [currentStep, setCurrentStep] = useState<WizardStep>('institution');
-  const [institutionData, setInstitutionData] = useState<InstitutionData>({
-    name: '',
-    cnpj: '',
-    address: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    email: '',
-    phone: ''
-  });
-  const [auditData, setAuditData] = useState<AuditData>({
-    startDate: undefined,
-    endDate: undefined,
-    auditors: [],
-    title: '',
-    description: ''
-  });
-  const [selectedSectors, setSelectedSectors] = useState<number[]>([]);
-  const [newAuditor, setNewAuditor] = useState('');
+  const [institutions, setInstitutions] = useState<Institution[]>([]);
+  const [templates, setTemplates] = useState<Template[]>([]);
+  const [sectors, setSectors] = useState<Sector[]>([]);
+  const [selectedInstitution, setSelectedInstitution] = useState<string>("");
+  const [selectedTemplate, setSelectedTemplate] = useState<string>("");
+  const [selectedSectors, setSelectedSectors] = useState<string[]>([]);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
+  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const { toast } = useToast();
 
-  const availableAuditors = [
-    "Fernando Paragó",
-    "Sandra Miziara", 
-    "Letícia Teles",
-    "Guilherme Thomé"
-  ];
+  // Load institutions
+  useEffect(() => {
+    loadInstitutions();
+  }, []);
+
+  // Load templates
+  useEffect(() => {
+    if (currentStep === 'template') {
+      loadTemplates();
+    }
+  }, [currentStep]);
+
+  // Load sectors when template is selected
+  useEffect(() => {
+    if (selectedTemplate) {
+      loadSectors(selectedTemplate);
+    }
+  }, [selectedTemplate]);
+
+  const loadInstitutions = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('institutions')
+        .select('id, name, cnpj, city, state')
+        .order('name');
+      
+      if (error) throw error;
+      setInstitutions(data || []);
+    } catch (error: any) {
+      toast({
+        title: "Erro ao carregar instituições",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadTemplates = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('audit_templates')
+        .select('id, name, description, version')
+        .eq('is_active', true)
+        .order('name');
+      
+      if (error) throw error;
+      setTemplates(data || []);
+    } catch (error: any) {
+      toast({
+        title: "Erro ao carregar templates",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadSectors = async (templateId: string) => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('sectors')
+        .select('id, name, description, template_id, order_index')
+        .eq('template_id', templateId)
+        .order('order_index');
+      
+      if (error) throw error;
+      setSectors(data || []);
+    } catch (error: any) {
+      toast({
+        title: "Erro ao carregar setores",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const steps = [
     { id: 'institution', label: 'Instituição', icon: Building2 },
-    { id: 'audit', label: 'Auditoria', icon: CalendarIcon },
-    { id: 'customize', label: 'Customização', icon: Settings },
-    { id: 'overview', label: 'Visão Geral', icon: CheckCircle }
+    { id: 'template', label: 'Template', icon: FileText },
+    { id: 'sectors', label: 'Setores', icon: Settings },
+    { id: 'overview', label: 'Revisão', icon: CheckCircle }
   ];
 
   const currentStepIndex = steps.findIndex(step => step.id === currentStep);
   const progress = ((currentStepIndex + 1) / steps.length) * 100;
 
   const handleNext = () => {
-    const stepOrder: WizardStep[] = ['institution', 'audit', 'customize', 'overview'];
+    const stepOrder: WizardStep[] = ['institution', 'template', 'sectors', 'overview'];
     const currentIndex = stepOrder.indexOf(currentStep);
     if (currentIndex < stepOrder.length - 1) {
       setCurrentStep(stepOrder[currentIndex + 1]);
@@ -97,31 +173,14 @@ const AuditWizard = ({ onComplete, onCancel }: AuditWizardProps) => {
   };
 
   const handlePrevious = () => {
-    const stepOrder: WizardStep[] = ['institution', 'audit', 'customize', 'overview'];
+    const stepOrder: WizardStep[] = ['institution', 'template', 'sectors', 'overview'];
     const currentIndex = stepOrder.indexOf(currentStep);
     if (currentIndex > 0) {
       setCurrentStep(stepOrder[currentIndex - 1]);
     }
   };
 
-  const handleAddAuditor = () => {
-    if (newAuditor.trim() && !auditData.auditors.includes(newAuditor.trim())) {
-      setAuditData({
-        ...auditData,
-        auditors: [...auditData.auditors, newAuditor.trim()]
-      });
-      setNewAuditor('');
-    }
-  };
-
-  const handleRemoveAuditor = (auditor: string) => {
-    setAuditData({
-      ...auditData,
-      auditors: auditData.auditors.filter(a => a !== auditor)
-    });
-  };
-
-  const handleSectorToggle = (sectorId: number) => {
+  const handleSectorToggle = (sectorId: string) => {
     setSelectedSectors(prev => 
       prev.includes(sectorId)
         ? prev.filter(id => id !== sectorId)
@@ -129,21 +188,50 @@ const AuditWizard = ({ onComplete, onCancel }: AuditWizardProps) => {
     );
   };
 
-  const handleComplete = () => {
-    onComplete({
-      institution: institutionData,
-      audit: auditData,
-      selectedSectors
-    });
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Usuário não autenticado");
+
+      const { error } = await supabase
+        .from('audits')
+        .insert({
+          institution_id: selectedInstitution,
+          template_id: selectedTemplate,
+          auditor_id: user.id,
+          title,
+          description,
+          start_date: startDate?.toISOString(),
+          status: 'draft'
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Auditoria criada com sucesso!",
+        description: "Você pode começar a responder as questões."
+      });
+
+      onComplete();
+    } catch (error: any) {
+      toast({
+        title: "Erro ao criar auditoria",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const canProceed = () => {
     switch (currentStep) {
       case 'institution':
-        return institutionData.name && institutionData.cnpj;
-      case 'audit':
-        return auditData.title && auditData.startDate && auditData.auditors.length > 0;
-      case 'customize':
+        return selectedInstitution !== "";
+      case 'template':
+        return selectedTemplate !== "" && title !== "";
+      case 'sectors':
         return selectedSectors.length > 0;
       case 'overview':
         return true;
@@ -151,6 +239,9 @@ const AuditWizard = ({ onComplete, onCancel }: AuditWizardProps) => {
         return false;
     }
   };
+
+  const selectedInstitutionData = institutions.find(i => i.id === selectedInstitution);
+  const selectedTemplateData = templates.find(t => t.id === selectedTemplate);
 
   return (
     <div className="min-h-screen bg-gradient-subtle p-4">
@@ -210,271 +301,233 @@ const AuditWizard = ({ onComplete, onCancel }: AuditWizardProps) => {
                 <div className="text-center mb-8">
                   <Building2 className="w-12 h-12 text-medical-primary mx-auto mb-4" />
                   <h2 className="text-2xl font-bold text-foreground mb-2">
-                    Dados da Instituição
+                    Selecione a Instituição
                   </h2>
                   <p className="text-muted-foreground">
-                    Informe os dados da unidade hospitalar que será auditada
+                    Escolha a unidade hospitalar que será auditada
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="md:col-span-2">
-                    <Label htmlFor="name">Nome da Instituição *</Label>
-                    <Input
-                      id="name"
-                      value={institutionData.name}
-                      onChange={(e) => setInstitutionData({ ...institutionData, name: e.target.value })}
-                      placeholder="Digite o nome da instituição"
-                    />
+                {loading ? (
+                  <div className="flex items-center justify-center py-12">
+                    <Loader2 className="w-8 h-8 animate-spin text-medical-primary" />
                   </div>
-                  
-                  <div>
-                    <Label htmlFor="cnpj">CNPJ *</Label>
-                    <Input
-                      id="cnpj"
-                      value={institutionData.cnpj}
-                      onChange={(e) => setInstitutionData({ ...institutionData, cnpj: e.target.value })}
-                      placeholder="00.000.000/0000-00"
-                    />
+                ) : institutions.length === 0 ? (
+                  <div className="text-center py-12">
+                    <p className="text-muted-foreground mb-4">
+                      Nenhuma instituição cadastrada
+                    </p>
+                    <Button onClick={onCancel}>
+                      Voltar
+                    </Button>
                   </div>
-                  
-                  <div>
-                    <Label htmlFor="phone">Telefone</Label>
-                    <Input
-                      id="phone"
-                      value={institutionData.phone}
-                      onChange={(e) => setInstitutionData({ ...institutionData, phone: e.target.value })}
-                      placeholder="(11) 9999-9999"
-                    />
+                ) : (
+                  <div className="grid grid-cols-1 gap-4">
+                    {institutions.map((institution) => (
+                      <Card
+                        key={institution.id}
+                        className={cn(
+                          "cursor-pointer transition-colors hover:border-medical-primary",
+                          selectedInstitution === institution.id && "border-medical-primary bg-medical-primary/5"
+                        )}
+                        onClick={() => setSelectedInstitution(institution.id)}
+                      >
+                        <CardContent className="p-6">
+                          <div className="flex items-start gap-4">
+                            <Checkbox
+                              checked={selectedInstitution === institution.id}
+                              onChange={() => setSelectedInstitution(institution.id)}
+                            />
+                            <div className="flex-1">
+                              <h3 className="font-semibold text-lg mb-1">{institution.name}</h3>
+                              <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                                {institution.cnpj && <span>CNPJ: {institution.cnpj}</span>}
+                                {institution.city && <span>{institution.city}/{institution.state}</span>}
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
                   </div>
-                  
-                  <div className="md:col-span-2">
-                    <Label htmlFor="address">Endereço</Label>
-                    <Input
-                      id="address"
-                      value={institutionData.address}
-                      onChange={(e) => setInstitutionData({ ...institutionData, address: e.target.value })}
-                      placeholder="Rua, número, bairro"
-                    />
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="city">Cidade</Label>
-                    <Input
-                      id="city"
-                      value={institutionData.city}
-                      onChange={(e) => setInstitutionData({ ...institutionData, city: e.target.value })}
-                      placeholder="Nome da cidade"
-                    />
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="state">Estado</Label>
-                    <Input
-                      id="state"
-                      value={institutionData.state}
-                      onChange={(e) => setInstitutionData({ ...institutionData, state: e.target.value })}
-                      placeholder="SP"
-                    />
-                  </div>
-                </div>
+                )}
               </div>
             )}
 
-            {/* Step 2: Audit Data */}
-            {currentStep === 'audit' && (
+            {/* Step 2: Template */}
+            {currentStep === 'template' && (
               <div className="space-y-6">
                 <div className="text-center mb-8">
-                  <CalendarIcon className="w-12 h-12 text-medical-primary mx-auto mb-4" />
+                  <FileText className="w-12 h-12 text-medical-primary mx-auto mb-4" />
                   <h2 className="text-2xl font-bold text-foreground mb-2">
-                    Dados da Auditoria
+                    Selecione o Template
                   </h2>
                   <p className="text-muted-foreground">
-                    Configure as informações básicas da auditoria
+                    Escolha o modelo de auditoria a ser aplicado
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="md:col-span-2">
-                    <Label htmlFor="title">Título da Auditoria *</Label>
-                    <Input
-                      id="title"
-                      value={auditData.title}
-                      onChange={(e) => setAuditData({ ...auditData, title: e.target.value })}
-                      placeholder="Ex: Auditoria RAG - Janeiro 2025"
-                    />
+                {loading ? (
+                  <div className="flex items-center justify-center py-12">
+                    <Loader2 className="w-8 h-8 animate-spin text-medical-primary" />
                   </div>
-
-                  <div>
-                    <Label>Data de Início *</Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className={`w-full justify-start text-left font-normal ${
-                            !auditData.startDate && "text-muted-foreground"
-                          }`}
-                        >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {auditData.startDate ? (
-                            format(auditData.startDate, "PPP", { locale: ptBR })
-                          ) : (
-                            "Selecione a data"
+                ) : templates.length === 0 ? (
+                  <div className="text-center py-12">
+                    <p className="text-muted-foreground mb-4">
+                      Nenhum template cadastrado
+                    </p>
+                    <Button onClick={onCancel}>
+                      Voltar
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-1 gap-4">
+                      {templates.map((template) => (
+                        <Card
+                          key={template.id}
+                          className={cn(
+                            "cursor-pointer transition-colors hover:border-medical-primary",
+                            selectedTemplate === template.id && "border-medical-primary bg-medical-primary/5"
                           )}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
-                        <Calendar
-                          mode="single"
-                          selected={auditData.startDate}
-                          onSelect={(date) => setAuditData({ ...auditData, startDate: date })}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </div>
-
-                  <div>
-                    <Label>Data de Término</Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className={`w-full justify-start text-left font-normal ${
-                            !auditData.endDate && "text-muted-foreground"
-                          }`}
+                          onClick={() => setSelectedTemplate(template.id)}
                         >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {auditData.endDate ? (
-                            format(auditData.endDate, "PPP", { locale: ptBR })
-                          ) : (
-                            "Selecione a data"
-                          )}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
-                        <Calendar
-                          mode="single"
-                          selected={auditData.endDate}
-                          onSelect={(date) => setAuditData({ ...auditData, endDate: date })}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <Label>Auditores *</Label>
-                    <div className="space-y-3">
-                      <div className="flex gap-2">
-                        <select
-                          value={newAuditor}
-                          onChange={(e) => setNewAuditor(e.target.value)}
-                          className="flex-1 px-3 py-2 border border-input rounded-md text-sm"
-                        >
-                          <option value="">Selecione um auditor</option>
-                          {availableAuditors
-                            .filter(auditor => !auditData.auditors.includes(auditor))
-                            .map(auditor => (
-                              <option key={auditor} value={auditor}>{auditor}</option>
-                            ))}
-                        </select>
-                        <Button 
-                          type="button" 
-                          onClick={handleAddAuditor}
-                          disabled={!newAuditor}
-                        >
-                          Adicionar
-                        </Button>
-                      </div>
-                      
-                      {auditData.auditors.length > 0 && (
-                        <div className="flex flex-wrap gap-2">
-                          {auditData.auditors.map(auditor => (
-                            <Badge key={auditor} variant="secondary" className="flex items-center gap-2">
-                              {auditor}
-                              <X 
-                                className="w-3 h-3 cursor-pointer hover:text-destructive" 
-                                onClick={() => handleRemoveAuditor(auditor)}
+                          <CardContent className="p-6">
+                            <div className="flex items-start gap-4">
+                              <Checkbox
+                                checked={selectedTemplate === template.id}
+                                onChange={() => setSelectedTemplate(template.id)}
                               />
-                            </Badge>
-                          ))}
-                        </div>
-                      )}
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <h3 className="font-semibold text-lg">{template.name}</h3>
+                                  <Badge variant="secondary">{template.version}</Badge>
+                                </div>
+                                {template.description && (
+                                  <p className="text-sm text-muted-foreground">{template.description}</p>
+                                )}
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="audit-title">Título da Auditoria *</Label>
+                        <Input
+                          id="audit-title"
+                          value={title}
+                          onChange={(e) => setTitle(e.target.value)}
+                          placeholder="Ex: Auditoria RAG - Janeiro 2025"
+                        />
+                      </div>
+
+                      <div>
+                        <Label htmlFor="audit-description">Descrição</Label>
+                        <Textarea
+                          id="audit-description"
+                          value={description}
+                          onChange={(e) => setDescription(e.target.value)}
+                          placeholder="Descrição opcional da auditoria..."
+                          className="min-h-[100px]"
+                        />
+                      </div>
+
+                      <div>
+                        <Label>Data de Início</Label>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              className={cn(
+                                "w-full justify-start text-left font-normal",
+                                !startDate && "text-muted-foreground"
+                              )}
+                            >
+                              <CalendarIcon className="mr-2 h-4 w-4" />
+                              {startDate ? (
+                                format(startDate, "PPP", { locale: ptBR })
+                              ) : (
+                                "Selecione a data"
+                              )}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0">
+                            <Calendar
+                              mode="single"
+                              selected={startDate}
+                              onSelect={(date) => setStartDate(date)}
+                              initialFocus
+                              className={cn("p-3 pointer-events-auto")}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </div>
                     </div>
                   </div>
-
-                  <div className="md:col-span-2">
-                    <Label htmlFor="description">Descrição</Label>
-                    <Textarea
-                      id="description"
-                      value={auditData.description}
-                      onChange={(e) => setAuditData({ ...auditData, description: e.target.value })}
-                      placeholder="Descrição opcional da auditoria..."
-                      className="min-h-[100px]"
-                    />
-                  </div>
-                </div>
+                )}
               </div>
             )}
 
-            {/* Step 3: Customize */}
-            {currentStep === 'customize' && (
+            {/* Step 3: Sectors */}
+            {currentStep === 'sectors' && (
               <div className="space-y-6">
                 <div className="text-center mb-8">
                   <Settings className="w-12 h-12 text-medical-primary mx-auto mb-4" />
                   <h2 className="text-2xl font-bold text-foreground mb-2">
-                    Customização da Auditoria
+                    Selecione os Setores
                   </h2>
                   <p className="text-muted-foreground">
-                    Selecione os módulos que serão incluídos na auditoria
+                    Escolha os setores que farão parte desta auditoria
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {hospitalSectors.map(sector => (
-                    <Card 
-                      key={sector.id} 
-                      className={`cursor-pointer transition-colors ${
-                        selectedSectors.includes(sector.id) 
-                          ? 'border-medical-primary bg-medical-primary/5' 
-                          : 'hover:border-medical-primary/50'
-                      }`}
-                      onClick={() => handleSectorToggle(sector.id)}
-                    >
-                      <CardContent className="p-4">
-                        <div className="flex items-start gap-3">
-                          <Checkbox 
-                            checked={selectedSectors.includes(sector.id)}
-                            onChange={() => handleSectorToggle(sector.id)}
-                          />
-                          <div className="flex-1 min-w-0">
-                            <h3 className="font-medium text-sm line-clamp-2">{sector.name}</h3>
-                            <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
-                              {sector.description}
-                            </p>
-                            <div className="mt-2">
-                              <Badge variant="outline" className="text-xs">
-                                {sector.questions.length} requisitos
-                              </Badge>
+                {loading ? (
+                  <div className="flex items-center justify-center py-12">
+                    <Loader2 className="w-8 h-8 animate-spin text-medical-primary" />
+                  </div>
+                ) : sectors.length === 0 ? (
+                  <div className="text-center py-12">
+                    <p className="text-muted-foreground mb-4">
+                      Nenhum setor encontrado neste template
+                    </p>
+                    <Button onClick={handlePrevious}>
+                      Voltar
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {sectors.map(sector => (
+                      <Card 
+                        key={sector.id} 
+                        className={cn(
+                          "cursor-pointer transition-colors hover:border-medical-primary",
+                          selectedSectors.includes(sector.id) && "border-medical-primary bg-medical-primary/5"
+                        )}
+                        onClick={() => handleSectorToggle(sector.id)}
+                      >
+                        <CardContent className="p-4">
+                          <div className="flex items-start gap-3">
+                            <Checkbox 
+                              checked={selectedSectors.includes(sector.id)}
+                              onChange={() => handleSectorToggle(sector.id)}
+                            />
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-medium text-sm line-clamp-2">{sector.name}</h3>
+                              {sector.description && (
+                                <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                                  {sector.description}
+                                </p>
+                              )}
                             </div>
                           </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-
-                <div className="text-center p-4 bg-muted/20 rounded-lg">
-                  <p className="text-sm text-muted-foreground">
-                    {selectedSectors.length} módulo(s) selecionado(s) • {
-                      selectedSectors.reduce((acc, id) => {
-                        const sector = hospitalSectors.find(s => s.id === id);
-                        return acc + (sector?.questions.length || 0);
-                      }, 0)
-                    } requisitos total
-                  </p>
-                </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 
@@ -482,114 +535,125 @@ const AuditWizard = ({ onComplete, onCancel }: AuditWizardProps) => {
             {currentStep === 'overview' && (
               <div className="space-y-6">
                 <div className="text-center mb-8">
-                  <CheckCircle className="w-12 h-12 text-medical-success mx-auto mb-4" />
+                  <CheckCircle className="w-12 h-12 text-medical-primary mx-auto mb-4" />
                   <h2 className="text-2xl font-bold text-foreground mb-2">
-                    Visão Geral da Auditoria
+                    Revisão Final
                   </h2>
                   <p className="text-muted-foreground">
-                    Revise as informações antes de iniciar a auditoria
+                    Confira os dados antes de criar a auditoria
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Institution Summary */}
+                <div className="space-y-6">
                   <Card>
                     <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Building2 className="w-5 h-5" />
-                        Instituição
-                      </CardTitle>
+                      <CardTitle className="text-lg">Instituição</CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-2">
-                      <p><strong>Nome:</strong> {institutionData.name}</p>
-                      <p><strong>CNPJ:</strong> {institutionData.cnpj}</p>
-                      {institutionData.city && (
-                        <p><strong>Cidade:</strong> {institutionData.city}, {institutionData.state}</p>
-                      )}
+                    <CardContent>
+                      <dl className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <dt className="font-medium text-muted-foreground">Nome</dt>
+                          <dd className="text-foreground">{selectedInstitutionData?.name}</dd>
+                        </div>
+                        <div>
+                          <dt className="font-medium text-muted-foreground">CNPJ</dt>
+                          <dd className="text-foreground">{selectedInstitutionData?.cnpj || 'N/A'}</dd>
+                        </div>
+                        {selectedInstitutionData?.city && (
+                          <div>
+                            <dt className="font-medium text-muted-foreground">Cidade</dt>
+                            <dd className="text-foreground">{selectedInstitutionData.city}/{selectedInstitutionData.state}</dd>
+                          </div>
+                        )}
+                      </dl>
                     </CardContent>
                   </Card>
 
-                  {/* Audit Summary */}
                   <Card>
                     <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <CalendarIcon className="w-5 h-5" />
-                        Auditoria
+                      <CardTitle className="text-lg">Template e Auditoria</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <dl className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <dt className="font-medium text-muted-foreground">Template</dt>
+                          <dd className="text-foreground">{selectedTemplateData?.name}</dd>
+                        </div>
+                        <div>
+                          <dt className="font-medium text-muted-foreground">Versão</dt>
+                          <dd className="text-foreground">{selectedTemplateData?.version}</dd>
+                        </div>
+                        <div className="md:col-span-2">
+                          <dt className="font-medium text-muted-foreground">Título</dt>
+                          <dd className="text-foreground">{title}</dd>
+                        </div>
+                        {description && (
+                          <div className="md:col-span-2">
+                            <dt className="font-medium text-muted-foreground">Descrição</dt>
+                            <dd className="text-foreground">{description}</dd>
+                          </div>
+                        )}
+                        {startDate && (
+                          <div>
+                            <dt className="font-medium text-muted-foreground">Data de Início</dt>
+                            <dd className="text-foreground">{format(startDate, "PPP", { locale: ptBR })}</dd>
+                          </div>
+                        )}
+                      </dl>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">
+                        Setores Selecionados ({selectedSectors.length})
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-2">
-                      <p><strong>Título:</strong> {auditData.title}</p>
-                      {auditData.startDate && (
-                        <p><strong>Início:</strong> {format(auditData.startDate, "PPP", { locale: ptBR })}</p>
-                      )}
-                      <p><strong>Auditores:</strong> {auditData.auditors.join(', ')}</p>
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        {sectors
+                          .filter(s => selectedSectors.includes(s.id))
+                          .map(sector => (
+                            <Badge key={sector.id} variant="secondary" className="justify-start">
+                              {sector.name}
+                            </Badge>
+                          ))}
+                      </div>
                     </CardContent>
                   </Card>
                 </div>
-
-                {/* Selected Modules */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Módulos Selecionados</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                      {selectedSectors.map(sectorId => {
-                        const sector = hospitalSectors.find(s => s.id === sectorId);
-                        return sector && (
-                          <div key={sectorId} className="flex items-center gap-2 p-3 bg-muted/20 rounded-lg">
-                            <CheckCircle className="w-4 h-4 text-medical-success" />
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium">{sector.name}</p>
-                              <p className="text-xs text-muted-foreground">
-                                {sector.questions.length} requisitos
-                              </p>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </CardContent>
-                </Card>
               </div>
             )}
           </CardContent>
         </Card>
 
         {/* Navigation */}
-        <div className="flex items-center justify-between">
-          <Button 
-            variant="outline" 
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+          <Button
+            variant="outline"
             onClick={currentStepIndex === 0 ? onCancel : handlePrevious}
-            className="flex items-center gap-2"
+            className="w-full sm:w-auto"
           >
-            {currentStepIndex === 0 ? (
-              <>
-                <X className="w-4 h-4" />
-                Cancelar
-              </>
-            ) : (
-              <>
-                <ArrowLeft className="w-4 h-4" />
-                Anterior
-              </>
-            )}
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            {currentStepIndex === 0 ? 'Cancelar' : 'Anterior'}
           </Button>
-
-          <Button 
-            onClick={currentStep === 'overview' ? handleComplete : handleNext}
-            disabled={!canProceed()}
-            className="flex items-center gap-2"
+          
+          <div className="flex-1" />
+          
+          <Button
+            onClick={currentStep === 'overview' ? handleSubmit : handleNext}
+            disabled={!canProceed() || submitting}
+            className="w-full sm:w-auto"
           >
-            {currentStep === 'overview' ? (
+            {submitting ? (
               <>
-                <CheckCircle className="w-4 h-4" />
-                Iniciar Auditoria
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Criando...
               </>
             ) : (
               <>
-                Próximo
-                <ArrowRight className="w-4 h-4" />
+                {currentStep === 'overview' ? 'Criar Auditoria' : 'Próximo'}
+                <ArrowRight className="w-4 h-4 ml-2" />
               </>
             )}
           </Button>

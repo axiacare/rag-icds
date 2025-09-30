@@ -137,19 +137,10 @@ const Index = () => {
     setAppState('report');
   };
 
-  const handleWizardComplete = (data: any) => {
-    console.log('Wizard completed with data:', data);
+  const handleWizardComplete = () => {
     setShowWizard(false);
-    setShowInstitutionForm(true);
-    // Here you could set the institution data and selected sectors from the wizard
-    setInstitutionData({
-      name: data.institution.name,
-      registrationNumber: data.institution.cnpj,
-      auditDate: data.audit.startDate,
-      auditors: data.audit.auditors,
-      selectedSectors: data.selectedSectors,
-    });
-    setSelectedSectors(data.selectedSectors);
+    // Refresh data to show new audit
+    window.location.reload();
   };
 
   const handleWizardCancel = () => {
