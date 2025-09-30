@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import AdminApprovals from "./AdminApprovals";
 import UserManagement from "@/components/UserManagement";
+import InstitutionManagement from "@/components/InstitutionManagement";
 
 interface Question {
   id: number;
@@ -148,36 +149,7 @@ const Admin = () => {
 
         {/* Institutions Tab */}
         {activeTab === 'institutions' && (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div>
-                <h2 className="text-xl font-semibold text-foreground">
-                  Gerenciar Unidades
-                </h2>
-                <p className="text-muted-foreground mt-1">
-                  Configure unidades hospitalares e suas informações
-                </p>
-              </div>
-              <Button className="w-full sm:w-auto">
-                <Plus className="w-4 h-4 mr-2" />
-                Nova Unidade
-              </Button>
-            </div>
-
-            <Card>
-              <CardContent className="p-6">
-                <div className="text-center py-8">
-                  <Building2 className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-foreground mb-2">
-                    Gerenciamento de Unidades
-                  </h3>
-                  <p className="text-muted-foreground">
-                    Esta funcionalidade será implementada para gerenciar unidades hospitalares
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          <InstitutionManagement />
         )}
 
         {/* Sectors Tab */}
