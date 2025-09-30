@@ -10,6 +10,7 @@ import { hospitalSectors } from "@/data/realistic-sectors";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import AdminApprovals from "./AdminApprovals";
+import UserManagement from "@/components/UserManagement";
 
 interface Question {
   id: number;
@@ -142,36 +143,7 @@ const Admin = () => {
 
         {/* Users Tab */}
         {activeTab === 'users' && (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div>
-                <h2 className="text-xl font-semibold text-foreground">
-                  Gerenciar Usuários
-                </h2>
-                <p className="text-muted-foreground mt-1">
-                  Administre auditores e suas permissões
-                </p>
-              </div>
-              <Button className="w-full sm:w-auto">
-                <Plus className="w-4 h-4 mr-2" />
-                Novo Usuário
-              </Button>
-            </div>
-
-            <Card>
-              <CardContent className="p-6">
-                <div className="text-center py-8">
-                  <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-foreground mb-2">
-                    Gerenciamento de Usuários
-                  </h3>
-                  <p className="text-muted-foreground">
-                    Esta funcionalidade será implementada para gerenciar auditores e permissões
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          <UserManagement />
         )}
 
         {/* Institutions Tab */}
