@@ -118,7 +118,8 @@ const Auditor = () => {
         description: "Você pode começar a responder as perguntas"
       });
 
-      fetchAudits();
+      // Navegar para a página de execução
+      navigate(`/auditor/execute/${auditId}`);
     } catch (error) {
       console.error('Erro ao iniciar auditoria:', error);
       toast({
@@ -301,7 +302,11 @@ const Auditor = () => {
                             </Button>
                           )}
                           {audit.status === 'in_progress' && (
-                            <Button variant="default" size="sm">
+                            <Button 
+                              variant="default" 
+                              size="sm"
+                              onClick={() => navigate(`/auditor/execute/${audit.id}`)}
+                            >
                               <Play className="w-4 h-4 mr-2" />
                               Continuar
                             </Button>

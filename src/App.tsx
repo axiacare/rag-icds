@@ -12,6 +12,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import Reports from "./pages/Auditor";
+import AuditExecution from "./pages/AuditExecution";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -48,6 +49,13 @@ const App = () => (
               <ProtectedRoute>
                 <PageTransition>
                   <Reports />
+                </PageTransition>
+              </ProtectedRoute>
+            } />
+            <Route path="/auditor/execute/:auditId" element={
+              <ProtectedRoute>
+                <PageTransition>
+                  <AuditExecution />
                 </PageTransition>
               </ProtectedRoute>
             } />
